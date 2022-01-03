@@ -3,18 +3,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pathmaker/main.dart';
 
 class MessageBox extends ConsumerStatefulWidget {
-  MessageBox(
-      {required this.contents, required this.id, this.isDisabled = false});
+  MessageBox({required this.contents, required this.id});
 
   final Widget contents;
   final int id;
-  bool isDisabled;
 
   @override
   _MessageBoxState createState() => _MessageBoxState();
 }
 
 class _MessageBoxState extends ConsumerState<MessageBox> {
+  bool isDisabled = false;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -30,17 +30,21 @@ class _MessageBoxState extends ConsumerState<MessageBox> {
                 Container(
                   alignment: Alignment.bottomRight,
                   child: TextButton(
-                    onPressed: widget.isDisabled
+                    onPressed: isDisabled
                         ? null
-                        : () {
-                            setState(() {
-                              widget.isDisabled = true;
-                            });
-                            ref.read(dataCoordinatorProvider).nextMessage();
-                            ref
-                                .read(dataCoordinatorProvider)
-                                .updateSelections();
-                          },
+                        : ref
+                                .watch(dataCoordinatorProvider)
+                                .messageIsCompleteStatus[widget.id]!
+                            ? () {
+                                setState(() {
+                                  isDisabled = true;
+                                });
+                                ref.read(dataCoordinatorProvider).nextMessage();
+                                ref
+                                    .read(dataCoordinatorProvider)
+                                    .updateSelections();
+                              }
+                            : null,
                     child: Text('Next'),
                   ),
                 ),
