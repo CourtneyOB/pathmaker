@@ -1,0 +1,62 @@
+{
+  "Dwarf": {
+    "abilityBoosts": [
+      "con",
+      "wis",
+      "free"
+    ],
+    "abilityFlaws": [
+      "cha"
+    ]
+  },
+"Elf" : {
+  "abilityBoosts": [
+    "dex",
+    "int",
+    "free"
+  ],
+  "abilityFlaws": [
+    "con"
+  ]
+},
+
+ "Gnome" : {
+ "abilityBoosts": [
+ "con", "cha", "free"
+ ],
+ "abilityFlaws": [
+ "str"
+ ]
+ },
+
+"Goblin" : {
+  "abilityBoosts": [
+    "dex",
+    "cha",
+    "free"
+  ],
+  "abilityFlaws": [
+    "wis"
+  ]
+},
+
+"Halfling" : {
+  "abilityBoosts": [
+    "dex",
+    "wis",
+    "free"
+  ],
+  "abilityFlaws": [
+    "str"
+  ]
+},
+
+ "Human" : {
+   "abilityBoosts": [
+     "free",
+     "free"
+   ],
+   "abilityFlaws": [
+   ]
+ }
+}
