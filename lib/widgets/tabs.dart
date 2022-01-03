@@ -1,21 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:pathmaker/constants.dart';
+import 'package:pathmaker/enum.dart';
+import 'package:pathmaker/main.dart';
 import 'package:pathmaker/widgets/tab_detail.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Tabs extends StatelessWidget {
-  const Tabs({
-    Key? key,
-  }) : super(key: key);
+class Tabs extends ConsumerWidget {
+  Map<int, Ancestry> ancestries = {
+    0: Ancestry.dwarf,
+    1: Ancestry.elf,
+    2: Ancestry.gnome,
+    3: Ancestry.goblin,
+    4: Ancestry.halfling,
+    5: Ancestry.human
+  };
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return DefaultTabController(
-      length: 6,
+      length: ancestries.length,
       child: Column(
         children: [
           Container(
             height: 40.0,
             child: TabBar(
+              onTap: (index) {
+                ref.read(dataCoordinatorProvider).selectedAncestry =
+                    ancestries[index];
+                ref.read(dataCoordinatorProvider).updateSelections();
+              },
               indicatorColor: kDarkPrimaryColour,
               labelColor: kSecondaryTextColour,
               tabs: [

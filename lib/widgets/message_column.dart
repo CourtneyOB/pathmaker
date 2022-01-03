@@ -11,7 +11,7 @@ class MessageColumn extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final List<MessageBox> messages =
-        ref.watch(messageProvider).currentMessages;
+        ref.watch(dataCoordinatorProvider).currentMessages;
 
     return Expanded(
       child: Padding(

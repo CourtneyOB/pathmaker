@@ -1,5 +1,5 @@
 {
-  "Dwarf": {
+  "dwarf": {
     "abilityBoosts": [
       "con",
       "wis",
@@ -9,7 +9,7 @@
       "cha"
     ]
   },
-"Elf" : {
+"elf" : {
   "abilityBoosts": [
     "dex",
     "int",
@@ -20,7 +20,7 @@
   ]
 },
 
- "Gnome" : {
+ "gnome" : {
  "abilityBoosts": [
  "con", "cha", "free"
  ],
@@ -29,7 +29,7 @@
  ]
  },
 
-"Goblin" : {
+"goblin" : {
   "abilityBoosts": [
     "dex",
     "cha",
@@ -40,7 +40,7 @@
   ]
 },
 
-"Halfling" : {
+"halfling" : {
   "abilityBoosts": [
     "dex",
     "wis",
@@ -51,7 +51,7 @@
   ]
 },
 
- "Human" : {
+ "human" : {
    "abilityBoosts": [
      "free",
      "free"

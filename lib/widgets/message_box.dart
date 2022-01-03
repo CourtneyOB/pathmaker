@@ -2,13 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pathmaker/main.dart';
 
-class MessageBox extends ConsumerWidget {
-  MessageBox({required this.contents});
+class MessageBox extends ConsumerStatefulWidget {
+  MessageBox(
+      {required this.contents, required this.id, this.isDisabled = false});
 
   final Widget contents;
+  final int id;
+  bool isDisabled;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _MessageBoxState createState() => _MessageBoxState();
+}
+
+class _MessageBoxState extends ConsumerState<MessageBox> {
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         Card(
@@ -18,14 +26,21 @@ class MessageBox extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                contents,
+                widget.contents,
                 Container(
                   alignment: Alignment.bottomRight,
                   child: TextButton(
-                    onPressed: () {
-                      ref.read(messageProvider).nextMessage();
-                      //TODO: Needs to have some optional way of undertaking the function of the box
-                    },
+                    onPressed: widget.isDisabled
+                        ? null
+                        : () {
+                            setState(() {
+                              widget.isDisabled = true;
+                            });
+                            ref.read(dataCoordinatorProvider).nextMessage();
+                            ref
+                                .read(dataCoordinatorProvider)
+                                .updateSelections();
+                          },
                     child: Text('Next'),
                   ),
                 ),

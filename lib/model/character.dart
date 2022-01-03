@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:pathmaker/constants.dart';
+import 'package:pathmaker/enum.dart';
 import 'package:pathmaker/services/json_reader.dart';
 
 class Character extends ChangeNotifier {
@@ -9,7 +10,6 @@ class Character extends ChangeNotifier {
 
   set name(String value) {
     _name = value;
-    notifyListeners();
   }
 
   //Ability scores
@@ -33,7 +33,7 @@ class Character extends ChangeNotifier {
   String get intl => _intl.toString();
 
   //Background
-  String _ancestry;
+  Ancestry? _ancestry;
 
   Character()
       : _str = 10,
@@ -41,39 +41,39 @@ class Character extends ChangeNotifier {
         _cha = 10,
         _wis = 10,
         _con = 10,
-        _intl = 10,
-        _ancestry = '';
+        _intl = 10;
 
-  void chooseAncestry(String newAncestry) async {
+  Future<void> chooseAncestry(Ancestry newAncestry) async {
     Map<String, dynamic> data = await MyJsonReader.loadJson(kAncestryJson);
 
     //if ancestry already applied, remove the ability modifiers before applying new ones
-    if (_ancestry.isNotEmpty) {
+    if (_ancestry != null) {
       if (_ancestry == newAncestry) {
         return;
       }
-      List<dynamic> removeBoosts = data[_ancestry]['abilityBoosts'];
+      List<dynamic> removeBoosts =
+          data[_ancestry!.stringValue()]['abilityBoosts'];
       for (String boost in removeBoosts) {
         modifyAbilityScore(boost, -2);
       }
-      List<dynamic> removeFlaws = data[_ancestry]['abilityFlaws'];
+      List<dynamic> removeFlaws =
+          data[_ancestry!.stringValue()]['abilityFlaws'];
       for (String flaw in removeFlaws) {
         modifyAbilityScore(flaw, 2);
       }
     }
 
-    List<dynamic> boosts = data[newAncestry]['abilityBoosts'];
+    List<dynamic> boosts = data[newAncestry.stringValue()]['abilityBoosts'];
     for (String boost in boosts) {
       modifyAbilityScore(boost, 2);
     }
 
-    List<dynamic> flaws = data[newAncestry]['abilityFlaws'];
+    List<dynamic> flaws = data[newAncestry.stringValue()]['abilityFlaws'];
     for (String flaw in flaws) {
       modifyAbilityScore(flaw, -2);
     }
 
     _ancestry = newAncestry;
-    notifyListeners();
   }
 
   void modifyAbilityScore(String name, int modifier) {

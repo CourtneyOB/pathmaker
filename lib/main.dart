@@ -3,9 +3,10 @@ import 'screens/homepage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pathmaker/model/character.dart';
 import 'package:pathmaker/services/message_service.dart';
+import 'package:pathmaker/services/data_coordinator.dart';
 
-final dataProvider = ChangeNotifierProvider((ref) => Character());
-final messageProvider = ChangeNotifierProvider((ref) => MessageService());
+final dataCoordinatorProvider =
+    ChangeNotifierProvider((ref) => DataCoordinator());
 
 void main() {
   runApp(

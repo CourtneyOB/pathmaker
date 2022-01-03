@@ -67,13 +67,15 @@ class CharacterSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String name = ref.watch(dataProvider).name;
-    final String str = ref.watch(dataProvider).str;
-    final String con = ref.watch(dataProvider).con;
-    final String dex = ref.watch(dataProvider).dex;
-    final String intl = ref.watch(dataProvider).intl;
-    final String cha = ref.watch(dataProvider).cha;
-    final String wis = ref.watch(dataProvider).wis;
+    final String name =
+        ref.watch(dataCoordinatorProvider).currentCharacter.name;
+    final String str = ref.watch(dataCoordinatorProvider).currentCharacter.str;
+    final String con = ref.watch(dataCoordinatorProvider).currentCharacter.con;
+    final String dex = ref.watch(dataCoordinatorProvider).currentCharacter.dex;
+    final String intl =
+        ref.watch(dataCoordinatorProvider).currentCharacter.intl;
+    final String cha = ref.watch(dataCoordinatorProvider).currentCharacter.cha;
+    final String wis = ref.watch(dataCoordinatorProvider).currentCharacter.wis;
 
     return Expanded(
       child: Padding(
