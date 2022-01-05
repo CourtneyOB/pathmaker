@@ -49,18 +49,17 @@ class _TabsState extends ConsumerState<Tabs> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: ref.watch(dataCoordinatorProvider).data.AncestryLibrary.length,
+      length: ref.read(dataCoordinatorProvider).data.AncestryLibrary.length,
       child: Column(
         children: [
           Container(
             height: 40.0,
             child: TabBar(
               onTap: (index) {
-                ref.read(dataCoordinatorProvider).selectedAncestry = ref
+                ref.read(dataCoordinatorProvider.notifier).selectAncestry(ref
                     .read(dataCoordinatorProvider)
                     .data
-                    .AncestryLibrary[index];
-                ref.read(dataCoordinatorProvider).updateSelections();
+                    .AncestryLibrary[index]);
               },
               indicatorColor: kDarkPrimaryColour,
               labelColor: kSecondaryTextColour,

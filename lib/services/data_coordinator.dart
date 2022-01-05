@@ -1,25 +1,32 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pathmaker/data/pathfinder_data.dart';
 import 'package:pathmaker/model/character.dart';
 import 'package:pathmaker/services/message_service.dart';
-import 'package:flutter/foundation.dart';
 import 'package:pathmaker/widgets/message_box.dart';
 import 'package:pathmaker/model/ancestry.dart';
 import 'package:pathmaker/enum.dart';
 
-class DataCoordinatorNotifier extends StateNotifier<DataCoordinator> {
-  DataCoordinatorNotifier(DataCoordinator state) : super(state);
+class DataCoordinator extends StateNotifier<DataState> {
+  DataCoordinator(DataState state) : super(state);
 
-  void testFunction() {
-    DataCoordinator coordinator = state;
-    coordinator.nextMessage();
-    state = coordinator;
+  void selectAncestry(Ancestry ancestry) {
+    state.selectedAncestry = ancestry;
+    state.updateSelections();
+    state = state.clone();
+  }
+
+  void addBoostSelection(int i, Ability ability) {
+    state.selectedFreeBoosts[i] = ability;
+    state = state.clone();
+  }
+
+  void nextMessage() {
+    state.nextMessage();
+    state = state.clone();
   }
 }
 
-class DataCoordinator {
+class DataState {
   //data
   PathFinderData data = PathFinderData();
 
@@ -44,17 +51,14 @@ class DataCoordinator {
   int progressTracker = 0;
   double percentageComplete = 0;
 
-  DataCoordinator() {
+  DataState() {
     currentMessages.add(messageService.messagesLibrary[0]);
     messageIsCompleteStatus[0] = true;
     percentageComplete = 1 / messageService.messagesLibrary.length;
   }
 
   void updateSelections() {
-    selectAncestry();
-  }
-
-  void selectAncestry() {
+    selectedFreeBoosts = [null, null];
     ancestryAvailableBoosts = currentCharacter.chooseAncestry(selectedAncestry);
     messageIsCompleteStatus[1] = true;
   }
@@ -69,10 +73,6 @@ class DataCoordinator {
     return freeBoosts;
   }
 
-  void addSelection(int i, Ability ability) {
-    print('function');
-  }
-
   //Messages
   void nextMessage() {
     if (progressTracker + 1 < messageService.messagesLibrary.length) {
@@ -82,5 +82,19 @@ class DataCoordinator {
       percentageComplete =
           (progressTracker + 1) / messageService.messagesLibrary.length;
     }
+  }
+
+  DataState clone() {
+    return DataState()
+      ..ancestryAvailableBoosts = this.ancestryAvailableBoosts
+      ..currentCharacter = this.currentCharacter
+      ..currentMessages = this.currentMessages
+      ..data = this.data
+      ..messageIsCompleteStatus = this.messageIsCompleteStatus
+      ..messageService = this.messageService
+      ..percentageComplete = this.percentageComplete
+      ..progressTracker = this.progressTracker
+      ..selectedAncestry = this.selectedAncestry
+      ..selectedFreeBoosts = this.selectedFreeBoosts;
   }
 }

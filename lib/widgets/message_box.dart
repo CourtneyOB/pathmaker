@@ -41,7 +41,7 @@ class _MessageBoxState extends ConsumerState<MessageBox> {
                                 });
                                 ref
                                     .read(dataCoordinatorProvider.notifier)
-                                    .testFunction();
+                                    .nextMessage();
                                 ref
                                     .read(dataCoordinatorProvider)
                                     .updateSelections();

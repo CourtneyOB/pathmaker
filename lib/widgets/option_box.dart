@@ -20,16 +20,13 @@ class _OptionBoxState extends ConsumerState<OptionBox> {
     List<Ability> boostList =
         ref.read(dataCoordinatorProvider).ancestryAvailableBoosts;
 
-    ref.listen<DataCoordinator>(dataCoordinatorProvider, (previous, next) {
-      print('listener called');
-      boostList = ref.read(dataCoordinatorProvider).updateFreeBoostList();
-    });
+    // ref.listen<DataState>(dataCoordinatorProvider, (previous, next) {
+    //   print('listener called');
+    //   boostList = ref.read(dataCoordinatorProvider).updateFreeBoostList();
+    // });
 
     Ability? value =
-        ref.watch(dataCoordinatorProvider).selectedFreeBoosts.length <=
-                widget.id
-            ? null
-            : ref.watch(dataCoordinatorProvider).selectedFreeBoosts[widget.id];
+        ref.watch(dataCoordinatorProvider).selectedFreeBoosts[widget.id];
 
     return DropdownButton(
       value: value,
@@ -38,7 +35,9 @@ class _OptionBoxState extends ConsumerState<OptionBox> {
         return DropdownMenuItem(child: Text(items.stringValue()), value: items);
       }).toList(),
       onChanged: (Ability? value) {
-        ref.read(dataCoordinatorProvider).addSelection(widget.id, value!);
+        ref
+            .read(dataCoordinatorProvider.notifier)
+            .addBoostSelection(widget.id, value!);
       },
     );
   }

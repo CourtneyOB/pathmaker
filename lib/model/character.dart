@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pathmaker/enum.dart';
 import 'package:pathmaker/model/ancestry.dart';
 
-class Character extends ChangeNotifier {
+class Character {
   String _name = "Hacks";
 
   String get name => _name;

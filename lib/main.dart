@@ -6,8 +6,8 @@ import 'package:pathmaker/services/message_service.dart';
 import 'package:pathmaker/services/data_coordinator.dart';
 
 final dataCoordinatorProvider =
-    StateNotifierProvider<DataCoordinatorNotifier, DataCoordinator>(
-        (ref) => DataCoordinatorNotifier(DataCoordinator()));
+    StateNotifierProvider<DataCoordinator, DataState>(
+        (ref) => DataCoordinator(DataState()));
 
 void main() {
   runApp(
