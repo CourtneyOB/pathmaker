@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:pathmaker/constants.dart';
+import 'package:flutter/material.dart';
 import 'package:pathmaker/enum.dart';
-import 'package:pathmaker/services/json_reader.dart';
 import 'package:pathmaker/model/ancestry.dart';
 
 class Character extends ChangeNotifier {
@@ -24,19 +23,15 @@ class Character extends ChangeNotifier {
 
   //Background
   Ancestry? _ancestry;
-  List<Ability> ancestryAvailableBoosts = [];
-  List<Ability?> selectedFreeBoosts = [];
 
-  void chooseAncestry(Ancestry newAncestry) {
+  List<Ability> chooseAncestry(Ancestry newAncestry) {
     if (newAncestry == _ancestry) {
-      return;
+      List<Ability> ancestryAvailableBoosts =
+          newAncestry.getUnassignedAbilities();
+      return ancestryAvailableBoosts;
     }
     if (_ancestry != null) {
       //if ancestry already applied, remove the ability modifiers before applying new ones
-
-      //remove available boosts
-      selectedFreeBoosts.clear();
-      ancestryAvailableBoosts.clear();
 
       //remove boosts
       List<Ability> boosts = _ancestry!.getBoosts();
@@ -62,16 +57,14 @@ class Character extends ChangeNotifier {
       modifyAbilityScore(ability, -2);
     }
 
-    ancestryAvailableBoosts = newAncestry.getUnassignedAbilities();
+    List<Ability> ancestryAvailableBoosts =
+        newAncestry.getUnassignedAbilities();
     _ancestry = newAncestry;
+    return ancestryAvailableBoosts;
   }
 
   void modifyAbilityScore(Ability ability, int modifier) {
     int currentValue = abilityScores[ability]!;
     abilityScores[ability] = currentValue + modifier;
-  }
-
-  void resetAncestryAvailableBoosts() {
-    ancestryAvailableBoosts = _ancestry!.getUnassignedAbilities();
   }
 }

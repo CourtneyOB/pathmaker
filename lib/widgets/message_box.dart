@@ -39,7 +39,9 @@ class _MessageBoxState extends ConsumerState<MessageBox> {
                                 setState(() {
                                   isDisabled = true;
                                 });
-                                ref.read(dataCoordinatorProvider).nextMessage();
+                                ref
+                                    .read(dataCoordinatorProvider.notifier)
+                                    .testFunction();
                                 ref
                                     .read(dataCoordinatorProvider)
                                     .updateSelections();

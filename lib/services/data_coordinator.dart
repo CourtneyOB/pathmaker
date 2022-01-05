@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pathmaker/data/pathfinder_data.dart';
 import 'package:pathmaker/model/character.dart';
 import 'package:pathmaker/services/message_service.dart';
@@ -7,7 +9,17 @@ import 'package:pathmaker/widgets/message_box.dart';
 import 'package:pathmaker/model/ancestry.dart';
 import 'package:pathmaker/enum.dart';
 
-class DataCoordinator extends ChangeNotifier {
+class DataCoordinatorNotifier extends StateNotifier<DataCoordinator> {
+  DataCoordinatorNotifier(DataCoordinator state) : super(state);
+
+  void testFunction() {
+    DataCoordinator coordinator = state;
+    coordinator.nextMessage();
+    state = coordinator;
+  }
+}
+
+class DataCoordinator {
   //data
   PathFinderData data = PathFinderData();
 
@@ -20,14 +32,8 @@ class DataCoordinator extends ChangeNotifier {
       freeBoosts: 1,
       boosts: [Ability.con, Ability.wis],
       flaws: [Ability.cha]);
-  List<String> abilityOptions = [
-    'Dexterity',
-    'Intelligence',
-    'Strength',
-    'Constitution',
-    'Wisdom',
-    'Charisma'
-  ];
+  List<Ability> ancestryAvailableBoosts = [];
+  List<Ability?> selectedFreeBoosts = [null, null];
 
   //messages
   MessageService messageService = MessageService();
@@ -46,17 +52,28 @@ class DataCoordinator extends ChangeNotifier {
 
   void updateSelections() {
     selectAncestry();
-    notifyListeners();
   }
 
   void selectAncestry() {
-    currentCharacter.chooseAncestry(selectedAncestry);
+    ancestryAvailableBoosts = currentCharacter.chooseAncestry(selectedAncestry);
     messageIsCompleteStatus[1] = true;
-    notifyListeners();
+  }
+
+  List<Ability> updateFreeBoostList() {
+    List<Ability> freeBoosts = [];
+    for (Ability ability in ancestryAvailableBoosts) {
+      if (!selectedFreeBoosts.contains(ability)) {
+        freeBoosts.add(ability);
+      }
+    }
+    return freeBoosts;
+  }
+
+  void addSelection(int i, Ability ability) {
+    print('function');
   }
 
   //Messages
-
   void nextMessage() {
     if (progressTracker + 1 < messageService.messagesLibrary.length) {
       progressTracker++;
@@ -64,7 +81,6 @@ class DataCoordinator extends ChangeNotifier {
       messageIsCompleteStatus[progressTracker] = false;
       percentageComplete =
           (progressTracker + 1) / messageService.messagesLibrary.length;
-      notifyListeners();
     }
   }
 }

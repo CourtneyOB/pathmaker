@@ -3,6 +3,7 @@ import 'package:pathmaker/main.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:pathmaker/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pathmaker/services/data_coordinator.dart';
 
 class TopBar extends ConsumerWidget {
   const TopBar({
