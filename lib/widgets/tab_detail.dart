@@ -1,12 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:pathmaker/widgets/option_box.dart';
 import 'package:pathmaker/constants.dart';
 
 class TabDetail extends StatelessWidget {
   final String text;
   final String boosts;
   final String flaws;
+  final int optionalBoosts;
 
-  TabDetail({required this.text, required this.boosts, required this.flaws});
+  TabDetail(
+      {required this.text,
+      required this.boosts,
+      required this.flaws,
+      required this.optionalBoosts});
+
+  List<Widget> getContent() {
+    List<Widget> content = [
+      Text('$text \n'),
+      Text(
+        'Ability Boosts:',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      Text('$boosts \n'),
+      Text(
+        'Ability Flaws:',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      Text(flaws)
+    ];
+    if (optionalBoosts > 0) {
+      String text = '';
+      if (optionalBoosts == 1) {
+        text = '\nChoose a free ability boost:';
+      } else if (optionalBoosts > 1) {
+        text = '\nChoose $optionalBoosts free ability boosts:';
+      }
+      content.add(Text(
+        text,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ));
+    }
+
+    List<Widget> children = [];
+    for (int i = 0; i < optionalBoosts; i++) {
+      children.add(OptionBox(id: i));
+      children.add(SizedBox(
+        width: 10.0,
+      ));
+    }
+    Row row = Row(
+      children: children,
+    );
+    content.add(row);
+
+    return content;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,19 +66,7 @@ class TabDetail extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('$text \n'),
-            Text(
-              'Ability Boosts:',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            Text('$boosts \n'),
-            Text(
-              'Ability Flaws:',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            Text(flaws),
-          ],
+          children: getContent(),
         ),
       ),
     );

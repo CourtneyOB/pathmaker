@@ -12,7 +12,7 @@
 "elf" : {
   "abilityBoosts": [
     "dex",
-    "int",
+    "intl",
     "free"
   ],
   "abilityFlaws": [

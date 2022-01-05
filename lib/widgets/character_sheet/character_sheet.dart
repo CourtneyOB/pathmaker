@@ -10,6 +10,7 @@ import 'character_sheet_box.dart';
 import 'package:pathmaker/widgets/character_sheet/level_circle.dart';
 import 'weapon_row.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pathmaker/enum.dart';
 
 class CharacterSheet extends ConsumerWidget {
   const CharacterSheet({
@@ -69,13 +70,36 @@ class CharacterSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final String name =
         ref.watch(dataCoordinatorProvider).currentCharacter.name;
-    final String str = ref.watch(dataCoordinatorProvider).currentCharacter.str;
-    final String con = ref.watch(dataCoordinatorProvider).currentCharacter.con;
-    final String dex = ref.watch(dataCoordinatorProvider).currentCharacter.dex;
-    final String intl =
-        ref.watch(dataCoordinatorProvider).currentCharacter.intl;
-    final String cha = ref.watch(dataCoordinatorProvider).currentCharacter.cha;
-    final String wis = ref.watch(dataCoordinatorProvider).currentCharacter.wis;
+    final String str = ref
+        .watch(dataCoordinatorProvider)
+        .currentCharacter
+        .abilityScores[Ability.str]
+        .toString();
+    final String con = ref
+        .watch(dataCoordinatorProvider)
+        .currentCharacter
+        .abilityScores[Ability.con]
+        .toString();
+    final String dex = ref
+        .watch(dataCoordinatorProvider)
+        .currentCharacter
+        .abilityScores[Ability.dex]
+        .toString();
+    final String intl = ref
+        .watch(dataCoordinatorProvider)
+        .currentCharacter
+        .abilityScores[Ability.intl]
+        .toString();
+    final String cha = ref
+        .watch(dataCoordinatorProvider)
+        .currentCharacter
+        .abilityScores[Ability.cha]
+        .toString();
+    final String wis = ref
+        .watch(dataCoordinatorProvider)
+        .currentCharacter
+        .abilityScores[Ability.wis]
+        .toString();
 
     return Expanded(
       child: Padding(
