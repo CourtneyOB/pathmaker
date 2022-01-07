@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pathmaker/widgets/option_box.dart';
+import 'package:pathmaker/widgets/multiselect.dart';
 import 'package:pathmaker/constants.dart';
 
 class TabDetail extends StatelessWidget {
@@ -41,17 +41,9 @@ class TabDetail extends StatelessWidget {
       ));
     }
 
-    List<Widget> children = [];
-    for (int i = 0; i < optionalBoosts; i++) {
-      children.add(OptionBox(id: i));
-      children.add(SizedBox(
-        width: 10.0,
-      ));
-    }
-    Row row = Row(
-      children: children,
-    );
-    content.add(row);
+    content.add(MultiSelect(
+      maxSelection: optionalBoosts,
+    ));
 
     return content;
   }

@@ -44,7 +44,7 @@ class _MessageBoxState extends ConsumerState<MessageBox> {
                                     .nextMessage();
                                 ref
                                     .read(dataCoordinatorProvider)
-                                    .updateSelections();
+                                    .initialiseAncestry();
                               }
                             : null,
                     child: Text('Next'),

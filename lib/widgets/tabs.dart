@@ -56,7 +56,7 @@ class _TabsState extends ConsumerState<Tabs> {
             height: 40.0,
             child: TabBar(
               onTap: (index) {
-                ref.read(dataCoordinatorProvider.notifier).selectAncestry(ref
+                ref.read(dataCoordinatorProvider.notifier).applyAncestry(ref
                     .read(dataCoordinatorProvider)
                     .data
                     .AncestryLibrary[index]);
@@ -70,7 +70,7 @@ class _TabsState extends ConsumerState<Tabs> {
             height: 6.0,
           ),
           Container(
-            height: 250.0,
+            height: 200.0,
             child: TabBarView(
               children: getTabDetails(),
             ),

@@ -13,7 +13,7 @@ class MessageService {
       id: 1,
       contents: Column(
         children: [
-          Text('Choose a class'),
+          Text('Choose an ancestry'),
           Padding(
             padding:
                 const EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),

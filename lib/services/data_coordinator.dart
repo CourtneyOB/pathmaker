@@ -9,14 +9,33 @@ import 'package:pathmaker/enum.dart';
 class DataCoordinator extends StateNotifier<DataState> {
   DataCoordinator(DataState state) : super(state);
 
-  void selectAncestry(Ancestry ancestry) {
+  void applyAncestry(Ancestry ancestry) {
     state.selectedAncestry = ancestry;
-    state.updateSelections();
+    state.ancestryAvailableBoosts =
+        state.currentCharacter.chooseAncestry(state.selectedAncestry);
+
+    //remove existing boosts, then empty the list
+    for (Ability ability in state.selectedFreeBoosts) {
+      state.currentCharacter.modifyAbilityScore(ability, -2);
+    }
+    state.selectedFreeBoosts = [];
+
     state = state.clone();
   }
 
-  void addBoostSelection(int i, Ability ability) {
-    state.selectedFreeBoosts[i] = ability;
+  void applyFreeBoosts(List<Ability> abilities) {
+    //remove existing boosts
+    for (Ability ability in state.selectedFreeBoosts) {
+      state.currentCharacter.modifyAbilityScore(ability, -2);
+    }
+
+    //set new boosts
+    state.selectedFreeBoosts = abilities;
+    for (Ability ability in state.selectedFreeBoosts) {
+      state.currentCharacter.modifyAbilityScore(ability, 2);
+    }
+
+    state.messageIsCompleteStatus[1] = true;
     state = state.clone();
   }
 
@@ -40,7 +59,7 @@ class DataState {
       boosts: [Ability.con, Ability.wis],
       flaws: [Ability.cha]);
   List<Ability> ancestryAvailableBoosts = [];
-  List<Ability?> selectedFreeBoosts = [null, null];
+  List<Ability> selectedFreeBoosts = [];
 
   //messages
   MessageService messageService = MessageService();
@@ -57,20 +76,8 @@ class DataState {
     percentageComplete = 1 / messageService.messagesLibrary.length;
   }
 
-  void updateSelections() {
-    selectedFreeBoosts = [null, null];
+  void initialiseAncestry() {
     ancestryAvailableBoosts = currentCharacter.chooseAncestry(selectedAncestry);
-    messageIsCompleteStatus[1] = true;
-  }
-
-  List<Ability> updateFreeBoostList() {
-    List<Ability> freeBoosts = [];
-    for (Ability ability in ancestryAvailableBoosts) {
-      if (!selectedFreeBoosts.contains(ability)) {
-        freeBoosts.add(ability);
-      }
-    }
-    return freeBoosts;
   }
 
   //Messages
