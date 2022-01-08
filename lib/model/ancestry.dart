@@ -1,17 +1,32 @@
 import 'package:pathmaker/enum.dart';
+import 'package:pathmaker/model/heritage.dart';
 
 class Ancestry {
   String name;
   String description;
+  int initialHP;
+  Size size;
+  int speed;
+  List<Language> languages;
+  List<String> traits;
+  List<Heritage> heritages;
+
   Map<Ability, Modifier> abilityModifiers = {};
   int freeBoosts;
 
-  Ancestry(
-      {required this.name,
-      required this.description,
-      required this.freeBoosts,
-      required List<Ability> boosts,
-      required List<Ability> flaws}) {
+  Ancestry({
+    required this.name,
+    required this.description,
+    required this.freeBoosts,
+    required List<Ability> boosts,
+    required List<Ability> flaws,
+    required this.initialHP,
+    required this.size,
+    required this.speed,
+    required this.languages,
+    required this.traits,
+    required this.heritages,
+  }) {
     for (var ability in Ability.values) {
       if (boosts.contains(ability)) {
         abilityModifiers[ability] = Modifier.boost;

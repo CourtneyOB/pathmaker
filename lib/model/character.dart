@@ -1,18 +1,16 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:pathmaker/enum.dart';
 import 'package:pathmaker/model/ancestry.dart';
+import 'package:pathmaker/model/heritage.dart';
 
 class Character {
   String _name = "Hacks";
+  int _hp = 5;
+  Size _size = Size.medium;
+  int _speed = 0;
+  List<Language> _languages = [];
+  List<String> _traits = [];
 
-  String get name => _name;
-
-  set name(String value) {
-    _name = value;
-  }
-
-  Map<Ability, int> abilityScores = {
+  Map<Ability, int> _abilityScores = {
     Ability.cha: 10,
     Ability.dex: 10,
     Ability.con: 10,
@@ -21,8 +19,17 @@ class Character {
     Ability.str: 10,
   };
 
+  String get name => _name;
+  int get hp => _hp;
+  Size get size => _size;
+  int get speed => _speed;
+  List<Language> get languages => _languages;
+  List<String> get traits => _traits;
+  Map<Ability, int> get abilityScores => _abilityScores;
+
   //Background
   Ancestry? _ancestry;
+  Heritage? _heritage;
 
   List<Ability> chooseAncestry(Ancestry newAncestry) {
     if (newAncestry == _ancestry) {
@@ -57,10 +64,25 @@ class Character {
       modifyAbilityScore(ability, -2);
     }
 
+    //add other attributes
+    _hp = newAncestry.initialHP;
+    _size = newAncestry.size;
+    _languages = newAncestry.languages;
+    _speed = newAncestry.speed;
+    _traits = newAncestry.traits;
+
     List<Ability> ancestryAvailableBoosts =
         newAncestry.getUnassignedAbilities();
+
     _ancestry = newAncestry;
     return ancestryAvailableBoosts;
+  }
+
+  void chooseHeritage(Heritage newHeritage) {
+    if (_heritage == newHeritage) {
+      return;
+    }
+    _heritage = newHeritage;
   }
 
   void modifyAbilityScore(Ability ability, int modifier) {

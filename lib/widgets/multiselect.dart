@@ -14,14 +14,6 @@ class MultiSelect extends ConsumerStatefulWidget {
 }
 
 class _MultiSelectState extends ConsumerState<MultiSelect> {
-  String listAsString(List<Ability> abilities) {
-    List<String> stringList = [];
-    for (Ability ability in abilities) {
-      stringList.add(ability.stringValue());
-    }
-    return stringList.join(', ');
-  }
-
   void _showMultiSelect(BuildContext context) async {
     List<MultiSelectDialogItem> getItems() {
       List<MultiSelectDialogItem> items = [];
@@ -63,7 +55,7 @@ class _MultiSelectState extends ConsumerState<MultiSelect> {
           Text(
             ref.watch(dataCoordinatorProvider).selectedFreeBoosts.isEmpty
                 ? 'Select'
-                : listAsString(
+                : enumListAsString(
                     ref.watch(dataCoordinatorProvider).selectedFreeBoosts),
             style: TextStyle(color: kSecondaryTextColour, fontSize: 14.0),
           ),

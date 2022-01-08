@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pathmaker/constants.dart';
+import 'package:pathmaker/widgets/divider_line.dart';
 
 class TextBlock extends StatelessWidget {
   final String label;
@@ -43,21 +44,7 @@ class TextBlock extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 2.0),
-              child: Container(
-                width: 200.0,
-                height: 3.0,
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: kDividerColour,
-                      width: 0.8,
-                    ),
-                  ),
-                ),
-              ),
-            ), //DIVIDER LINE
+            DividerLine(), //DIVIDER LINE
             Container(
               padding: EdgeInsets.only(top: 1.0),
               alignment: Alignment.centerRight,

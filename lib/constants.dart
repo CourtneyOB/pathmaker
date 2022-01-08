@@ -28,7 +28,3 @@ const BoxDecoration kBoxShadow = BoxDecoration(
     ),
   ],
 );
-
-//Json data files
-
-const String kAncestryJson = 'lib/data/ancestry.json';

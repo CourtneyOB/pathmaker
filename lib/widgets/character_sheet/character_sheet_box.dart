@@ -5,9 +5,13 @@ class CharacterSheetBox extends StatelessWidget {
   final double height;
   final Widget content;
   final String label;
+  final bool padding;
 
   CharacterSheetBox(
-      {required this.height, required this.content, required this.label});
+      {required this.height,
+      required this.content,
+      required this.label,
+      required this.padding});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +29,10 @@ class CharacterSheetBox extends StatelessWidget {
               borderRadius: BorderRadius.circular(5.0),
             ),
             height: height,
-            child: content,
+            child: Padding(
+              padding: EdgeInsets.all(padding ? 15.0 : 0.0),
+              child: content,
+            ),
           ),
           Positioned(
             child: Container(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pathmaker/widgets/heritage_tabs.dart';
 import 'package:pathmaker/widgets/message_box.dart';
-import 'package:pathmaker/widgets/tabs.dart';
+import 'package:pathmaker/widgets/ancestry_tabs.dart';
 
 class MessageService {
   List<MessageBox> messagesLibrary = [
@@ -17,14 +18,23 @@ class MessageService {
           Padding(
             padding:
                 const EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
-            child: Tabs(),
+            child: AncestryTabs(),
           ),
         ],
       ),
     ),
     MessageBox(
       id: 2,
-      contents: Text('This is the next step'),
+      contents: Column(
+        children: [
+          Text('Ancestry continued...'),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
+            child: HeritageTabs(),
+          ),
+        ],
+      ),
     )
   ];
 }

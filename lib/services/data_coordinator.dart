@@ -5,6 +5,7 @@ import 'package:pathmaker/services/message_service.dart';
 import 'package:pathmaker/widgets/message_box.dart';
 import 'package:pathmaker/model/ancestry.dart';
 import 'package:pathmaker/enum.dart';
+import 'package:pathmaker/model/heritage.dart';
 
 class DataCoordinator extends StateNotifier<DataState> {
   DataCoordinator(DataState state) : super(state);
@@ -12,7 +13,7 @@ class DataCoordinator extends StateNotifier<DataState> {
   void applyAncestry(Ancestry ancestry) {
     state.selectedAncestry = ancestry;
     state.ancestryAvailableBoosts =
-        state.currentCharacter.chooseAncestry(state.selectedAncestry);
+        state.currentCharacter.chooseAncestry(state.selectedAncestry!);
 
     //remove existing boosts, then empty the list
     for (Ability ability in state.selectedFreeBoosts) {
@@ -21,6 +22,8 @@ class DataCoordinator extends StateNotifier<DataState> {
     state.selectedFreeBoosts = [];
 
     state = state.clone();
+
+    //TODO heritage, ancestry feat, languages
   }
 
   void applyFreeBoosts(List<Ability> abilities) {
@@ -39,6 +42,12 @@ class DataCoordinator extends StateNotifier<DataState> {
     state = state.clone();
   }
 
+  void applyHeritage(Heritage heritage) {
+    state.selectedHeritage = heritage;
+    state.currentCharacter.chooseHeritage(state.selectedHeritage!);
+    state = state.clone();
+  }
+
   void nextMessage() {
     state.nextMessage();
     state = state.clone();
@@ -51,13 +60,8 @@ class DataState {
 
   //character creation
   Character currentCharacter = Character();
-  Ancestry selectedAncestry = Ancestry(
-      name: 'Dwarf',
-      description:
-          'Dwarves are a short, stocky people who are often stubborn, fierce, and devoted.',
-      freeBoosts: 1,
-      boosts: [Ability.con, Ability.wis],
-      flaws: [Ability.cha]);
+  Ancestry? selectedAncestry;
+  Heritage? selectedHeritage;
   List<Ability> ancestryAvailableBoosts = [];
   List<Ability> selectedFreeBoosts = [];
 
@@ -77,7 +81,9 @@ class DataState {
   }
 
   void initialiseAncestry() {
-    ancestryAvailableBoosts = currentCharacter.chooseAncestry(selectedAncestry);
+    selectedAncestry = data.AncestryLibrary[0];
+    ancestryAvailableBoosts =
+        currentCharacter.chooseAncestry(selectedAncestry!);
   }
 
   //Messages

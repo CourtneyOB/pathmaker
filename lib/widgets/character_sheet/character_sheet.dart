@@ -4,6 +4,7 @@ import 'package:pathmaker/main.dart';
 import 'package:pathmaker/widgets/character_sheet/skill_box_with_training.dart';
 import 'package:pathmaker/widgets/character_sheet/stat_stack.dart';
 import 'package:pathmaker/widgets/character_sheet/modifier_circle.dart';
+import 'package:pathmaker/widgets/divider_line.dart';
 import 'text_block.dart';
 import 'package:pathmaker/widgets/character_sheet/skill_modifier.dart';
 import 'character_sheet_box.dart';
@@ -70,36 +71,82 @@ class CharacterSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final String name =
         ref.watch(dataCoordinatorProvider).currentCharacter.name;
+    final String ancestry =
+        ref.watch(dataCoordinatorProvider).selectedAncestry == null
+            ? ''
+            : ref.watch(dataCoordinatorProvider).selectedAncestry!.name;
     final String str = ref
         .watch(dataCoordinatorProvider)
         .currentCharacter
         .abilityScores[Ability.str]
         .toString();
+    final String strModifier = convertToModifier(ref
+        .watch(dataCoordinatorProvider)
+        .currentCharacter
+        .abilityScores[Ability.str]!);
     final String con = ref
         .watch(dataCoordinatorProvider)
         .currentCharacter
         .abilityScores[Ability.con]
         .toString();
+    final String conModifier = convertToModifier(ref
+        .watch(dataCoordinatorProvider)
+        .currentCharacter
+        .abilityScores[Ability.con]!);
     final String dex = ref
         .watch(dataCoordinatorProvider)
         .currentCharacter
         .abilityScores[Ability.dex]
         .toString();
+    final String dexModifier = convertToModifier(ref
+        .watch(dataCoordinatorProvider)
+        .currentCharacter
+        .abilityScores[Ability.dex]!);
     final String intl = ref
         .watch(dataCoordinatorProvider)
         .currentCharacter
         .abilityScores[Ability.intl]
         .toString();
+    final String intlModifier = convertToModifier(ref
+        .watch(dataCoordinatorProvider)
+        .currentCharacter
+        .abilityScores[Ability.intl]!);
     final String cha = ref
         .watch(dataCoordinatorProvider)
         .currentCharacter
         .abilityScores[Ability.cha]
         .toString();
+    final String chaModifier = convertToModifier(ref
+        .watch(dataCoordinatorProvider)
+        .currentCharacter
+        .abilityScores[Ability.cha]!);
     final String wis = ref
         .watch(dataCoordinatorProvider)
         .currentCharacter
         .abilityScores[Ability.wis]
         .toString();
+    final String wisModifier = convertToModifier(ref
+        .watch(dataCoordinatorProvider)
+        .currentCharacter
+        .abilityScores[Ability.wis]!);
+    final String size =
+        ref.watch(dataCoordinatorProvider).currentCharacter.size.stringValue();
+    final String hp =
+        ref.watch(dataCoordinatorProvider).currentCharacter.hp.toString();
+    final String speed =
+        ref.watch(dataCoordinatorProvider).currentCharacter.speed.toString();
+    final String languages =
+        ref.watch(dataCoordinatorProvider).currentCharacter.languages.isEmpty
+            ? 'None'
+            : enumListAsString(
+                ref.watch(dataCoordinatorProvider).currentCharacter.languages);
+    final String traits = ref
+            .watch(dataCoordinatorProvider)
+            .currentCharacter
+            .traits
+            .isEmpty
+        ? 'None'
+        : ref.watch(dataCoordinatorProvider).currentCharacter.traits.join(', ');
 
     return Expanded(
       child: Padding(
@@ -148,7 +195,7 @@ class CharacterSheet extends ConsumerWidget {
                                 ),
                                 TextBlock(
                                   label: 'Ancestry',
-                                  value: 'Android',
+                                  value: ancestry,
                                 ),
                                 TextBlock(
                                   label: 'Background',
@@ -188,7 +235,7 @@ class CharacterSheet extends ConsumerWidget {
                                   SizedBox(
                                     width: 5.0,
                                   ),
-                                  Text('25 ft'),
+                                  Text('$speed ft'),
                                 ],
                               ),
                               Row(
@@ -201,7 +248,7 @@ class CharacterSheet extends ConsumerWidget {
                                   SizedBox(
                                     width: 5.0,
                                   ),
-                                  Text('Medium'),
+                                  Text('$size'),
                                 ],
                               ),
                             ],
@@ -215,48 +262,49 @@ class CharacterSheet extends ConsumerWidget {
                   children: [
                     Expanded(
                       child: CharacterSheetBox(
+                        padding: false,
                         height: 100.0,
                         content: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             StatStack(
                               stat: 'STR',
-                              value: '+1',
+                              value: strModifier,
                               topIcon: ModifierCircle(
                                 value: str,
                               ),
                             ),
                             StatStack(
                               stat: 'DEX',
-                              value: '+1',
+                              value: dexModifier,
                               topIcon: ModifierCircle(
                                 value: dex,
                               ),
                             ),
                             StatStack(
                               stat: 'CON',
-                              value: '+1',
+                              value: conModifier,
                               topIcon: ModifierCircle(
                                 value: con,
                               ),
                             ),
                             StatStack(
                               stat: 'INT',
-                              value: '+1',
+                              value: intlModifier,
                               topIcon: ModifierCircle(
                                 value: intl,
                               ),
                             ),
                             StatStack(
                               stat: 'WIS',
-                              value: '+1',
+                              value: wisModifier,
                               topIcon: ModifierCircle(
                                 value: wis,
                               ),
                             ),
                             StatStack(
                               stat: 'CHA',
-                              value: '+1',
+                              value: chaModifier,
                               topIcon: ModifierCircle(
                                 value: cha,
                               ),
@@ -267,7 +315,7 @@ class CharacterSheet extends ConsumerWidget {
                       ),
                     )
                   ],
-                ), // SECOND ROW
+                ), // SECOND ROW - ABILITY SCORES
                 Row(
                   children: [
                     Expanded(
@@ -278,6 +326,7 @@ class CharacterSheet extends ConsumerWidget {
                               Expanded(
                                 flex: 2,
                                 child: CharacterSheetBox(
+                                  padding: false,
                                   height: 100.0,
                                   content: Row(
                                     mainAxisAlignment:
@@ -294,7 +343,7 @@ class CharacterSheet extends ConsumerWidget {
                                       ),
                                       StatStack(
                                         stat: 'Hitpoints',
-                                        value: '20',
+                                        value: hp,
                                         topIcon: Icon(
                                           Icons.favorite,
                                           color: kPrimaryColour,
@@ -312,6 +361,7 @@ class CharacterSheet extends ConsumerWidget {
                               Expanded(
                                 flex: 3,
                                 child: CharacterSheetBox(
+                                  padding: false,
                                   height: 100,
                                   content: Row(
                                     mainAxisAlignment:
@@ -352,28 +402,26 @@ class CharacterSheet extends ConsumerWidget {
                             ],
                           ),
                           CharacterSheetBox(
-                            height: 350,
-                            content: Padding(
-                              padding: const EdgeInsets.only(top: 15.0),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      children: getSkills1(),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      children: getSkills2(),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            padding: true,
+                            height: 360,
                             label: 'Skills',
+                            content: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    children: getSkills1(),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    children: getSkills2(),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
-                      ),
+                      ), //COMBAT/SAVING/SKILLS
                     ),
                     SizedBox(
                       width: 25.0,
@@ -382,69 +430,111 @@ class CharacterSheet extends ConsumerWidget {
                       child: Column(
                         children: [
                           CharacterSheetBox(
-                            height: 100,
-                            content: Row(
+                            label: 'Proficiencies',
+                            padding: true,
+                            height: 300,
+                            content: Column(
                               children: [
-                                Expanded(
-                                  child: Column(
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SkillBoxWithTraining(
+                                      width: 160.0,
+                                      training: 'T',
+                                      label: 'Simple Weapons',
+                                    ),
+                                    SkillBoxWithTraining(
+                                      width: 160.0,
+                                      training: 'U',
+                                      label: 'Martial Weapons',
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10.0),
+                                  child: Row(
                                     children: [
-                                      SkillBoxWithTraining(
-                                        width: 160.0,
-                                        training: 'T',
-                                        label: 'Simple Weapons',
-                                      ),
-                                      SkillBoxWithTraining(
-                                        width: 160.0,
-                                        training: 'U',
-                                        label: 'Martial Weapons',
-                                      ),
+                                      Text('Languages'),
+                                      DividerLine(),
                                     ],
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
                                   ),
                                 ),
-                                Expanded(
-                                  child: Column(),
+                                Row(
+                                  children: [
+                                    Text(languages),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10.0),
+                                  child: Row(
+                                    children: [
+                                      Text('Feats'),
+                                      DividerLine(),
+                                    ],
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Text('List feats here'),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10.0),
+                                  child: Row(
+                                    children: [
+                                      Text('Traits'),
+                                      DividerLine(),
+                                    ],
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Text(traits),
+                                  ],
                                 ),
                               ],
                             ),
-                            label: 'Proficiencies',
-                          ),
-                          CharacterSheetBox(
-                            height: 350,
-                            content: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 40.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  WeaponRow(
-                                    name: 'Dagger',
-                                    modifier: '+2',
-                                    damage: '1d4',
-                                  ),
-                                  WeaponRow(
-                                      name: 'Crossbow',
-                                      modifier: '-2',
-                                      damage: '1d6'),
-                                  WeaponRow(
-                                      name: 'Sling',
-                                      modifier: '+1',
-                                      damage: '1d4+1'),
-                                  WeaponRow(
-                                      name: 'Poison Dart',
-                                      modifier: '+1',
-                                      damage: '1d6+2'),
-                                ],
-                              ),
-                            ),
-                            label: 'Weapons',
                           ),
                         ],
-                      ),
+                      ), //PROF/WEAPONS
                     ),
                   ],
-                ), // THIRD ROW
+                ), //THIRD ROW - COMBAT/SAVING/PROF/SKILL/WEAPON
+                Row(
+                  children: [
+                    Expanded(
+                      child: CharacterSheetBox(
+                        padding: true,
+                        height: 360,
+                        label: 'Weapons',
+                        content: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            WeaponRow(
+                              name: 'Dagger',
+                              modifier: '+2',
+                              damage: '1d4',
+                            ),
+                            WeaponRow(
+                                name: 'Crossbow',
+                                modifier: '-2',
+                                damage: '1d6'),
+                            WeaponRow(
+                                name: 'Sling', modifier: '+1', damage: '1d4+1'),
+                            WeaponRow(
+                                name: 'Poison Dart',
+                                modifier: '+1',
+                                damage: '1d6+2'),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ) // THIRD ROW
               ],
             ),
           ),
