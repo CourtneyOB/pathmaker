@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'skill_box_with_training.dart';
-import 'package:pathmaker/widgets/character_sheet/modifier_circle.dart';
+import 'package:pathmaker/widgets/character_sheet/components/modifier_circle.dart';
 
 class SkillModifier extends StatelessWidget {
   SkillModifier(

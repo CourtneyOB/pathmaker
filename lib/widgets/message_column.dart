@@ -13,9 +13,9 @@ class MessageColumn extends ConsumerWidget {
     final List<MessageBox> messages =
         ref.watch(dataCoordinatorProvider).currentMessages;
 
-    return Expanded(
+    return Flexible(
       child: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: EdgeInsets.symmetric(horizontal: screenWidth(context) * 0.001),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: messages,

@@ -29,6 +29,7 @@ class _TabsState extends ConsumerState<Tabs> {
           Container(
             height: 40.0,
             child: TabBar(
+              isScrollable: true,
               onTap: (index) {
                 widget.onTap(index);
               },

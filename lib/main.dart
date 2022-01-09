@@ -9,6 +9,10 @@ final dataCoordinatorProvider =
     StateNotifierProvider<DataCoordinator, DataState>(
         (ref) => DataCoordinator(DataState()));
 
+double screenHeight(BuildContext context) => MediaQuery.of(context).size.height;
+
+double screenWidth(BuildContext context) => MediaQuery.of(context).size.width;
+
 void main() {
   runApp(
     ProviderScope(child: const MyApp()),

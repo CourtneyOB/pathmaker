@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 const kMobileWidth = 1350;
 const kWebHorizontalPadding = 50.0;
 
+const kCharacterSheetDemographicsMaxHeight = 170.0;
+
 //colours
 
 const Color kDarkPrimaryColour = Color(0xff455A64);

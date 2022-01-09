@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pathmaker/widgets/character_sheet/skill_box_with_training.dart';
+import 'package:pathmaker/widgets/character_sheet/components/skill_box_with_training.dart';
 
 class WeaponRow extends StatelessWidget {
   WeaponRow({required this.name, required this.modifier, required this.damage});

@@ -3,7 +3,6 @@ import 'package:pathmaker/main.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:pathmaker/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pathmaker/services/data_coordinator.dart';
 
 class TopBar extends ConsumerWidget {
   const TopBar({
@@ -13,14 +12,15 @@ class TopBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: kWebHorizontalPadding, vertical: 40.0),
+      padding: EdgeInsets.only(
+          top: screenWidth(context) * 0.02,
+          bottom: screenWidth(context) * 0.01),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Flexible(
             child: ConstrainedBox(
-              constraints: BoxConstraints(minWidth: 10.0, maxWidth: 800.0),
+              constraints: BoxConstraints(maxWidth: 800.0),
               child: LinearPercentIndicator(
                 lineHeight: 14.0,
                 percent: ref.watch(dataCoordinatorProvider).percentageComplete,

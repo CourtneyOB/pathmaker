@@ -21,6 +21,8 @@ class DataCoordinator extends StateNotifier<DataState> {
     }
     state.selectedFreeBoosts = [];
 
+    state.availableHeritages = ancestry.heritages;
+
     state = state.clone();
 
     //TODO heritage, ancestry feat, languages
@@ -62,6 +64,7 @@ class DataState {
   Character currentCharacter = Character();
   Ancestry? selectedAncestry;
   Heritage? selectedHeritage;
+  List<Heritage> availableHeritages = [];
   List<Ability> ancestryAvailableBoosts = [];
   List<Ability> selectedFreeBoosts = [];
 
@@ -90,7 +93,7 @@ class DataState {
   void nextMessage() {
     if (progressTracker + 1 < messageService.messagesLibrary.length) {
       progressTracker++;
-      currentMessages.add(messageService.messagesLibrary[progressTracker]);
+      currentMessages.add(MessageService().messagesLibrary[progressTracker]);
       messageIsCompleteStatus[progressTracker] = false;
       percentageComplete =
           (progressTracker + 1) / messageService.messagesLibrary.length;
@@ -108,6 +111,8 @@ class DataState {
       ..percentageComplete = this.percentageComplete
       ..progressTracker = this.progressTracker
       ..selectedAncestry = this.selectedAncestry
+      ..selectedHeritage = this.selectedHeritage
+      ..availableHeritages = this.availableHeritages
       ..selectedFreeBoosts = this.selectedFreeBoosts;
   }
 }

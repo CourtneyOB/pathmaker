@@ -3,7 +3,7 @@ import 'package:pathmaker/model/ancestry.dart';
 import 'package:pathmaker/model/heritage.dart';
 
 class Character {
-  String _name = "Hacks";
+  String _name = "ReallyReallyLongName";
   int _hp = 5;
   Size _size = Size.medium;
   int _speed = 0;
