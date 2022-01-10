@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pathmaker/layouts/layout_controller.dart';
+import 'package:pathmaker/layouts/small_web_layout.dart';
 import 'package:pathmaker/layouts/web_layout.dart';
 import 'package:pathmaker/layouts/mobile_layout.dart';
 
@@ -10,8 +11,9 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ResponsiveLayout(
-        webLayout: WebLayout(),
-        mobileLayout: MobileLayout(),
+        sizeXLLayout: WebLayout(),
+        sizeMLayout: MobileLayout(),
+        sizeLLayout: SmallWebLayout(),
       ),
     );
   }

@@ -1,11 +1,12 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pathmaker/data/pathfinder_data.dart';
 import 'package:pathmaker/model/character.dart';
 import 'package:pathmaker/services/message_service.dart';
-import 'package:pathmaker/widgets/message_box.dart';
 import 'package:pathmaker/model/ancestry.dart';
 import 'package:pathmaker/enum.dart';
 import 'package:pathmaker/model/heritage.dart';
+import 'package:pathmaker/model/message.dart';
 
 class DataCoordinator extends StateNotifier<DataState> {
   DataCoordinator(DataState state) : super(state);
@@ -50,8 +51,29 @@ class DataCoordinator extends StateNotifier<DataState> {
     state = state.clone();
   }
 
+  void setAncestryTab(int index) {
+    state.ancestryTabSelection = index;
+    state = state.clone();
+  }
+
+  void setHeritageTab(int index) {
+    state.heritageTabSelection = index;
+    state = state.clone();
+  }
+
   void nextMessage() {
     state.nextMessage();
+    state = state.clone();
+  }
+
+  void previousMessage() {
+    state.previousMessage();
+    state = state.clone();
+  }
+
+  void expandMessage(int index) {
+    state.currentMessages[index].isExpanded =
+        !state.currentMessages[index].isExpanded;
     state = state.clone();
   }
 }
@@ -70,8 +92,12 @@ class DataState {
 
   //messages
   MessageService messageService = MessageService();
-  List<MessageBox> currentMessages = [];
+  List<Message> currentMessages = [];
   Map<int, bool> messageIsCompleteStatus = {};
+
+  //tabs
+  int ancestryTabSelection = 0;
+  int heritageTabSelection = 0;
 
   //progress
   int progressTracker = 0;
@@ -84,17 +110,31 @@ class DataState {
   }
 
   void initialiseAncestry() {
-    selectedAncestry = data.AncestryLibrary[0];
-    ancestryAvailableBoosts =
-        currentCharacter.chooseAncestry(selectedAncestry!);
+    if (selectedAncestry == null) {
+      selectedAncestry = data.AncestryLibrary[0];
+      ancestryAvailableBoosts =
+          currentCharacter.chooseAncestry(selectedAncestry!);
+      availableHeritages = selectedAncestry!.heritages;
+    }
   }
 
   //Messages
   void nextMessage() {
     if (progressTracker + 1 < messageService.messagesLibrary.length) {
       progressTracker++;
-      currentMessages.add(MessageService().messagesLibrary[progressTracker]);
+      currentMessages.last.isExpanded = false;
+      currentMessages.add(messageService.messagesLibrary[progressTracker]);
       messageIsCompleteStatus[progressTracker] = false;
+      percentageComplete =
+          (progressTracker + 1) / messageService.messagesLibrary.length;
+    }
+  }
+
+  void previousMessage() {
+    if (progressTracker - 1 >= 0) {
+      progressTracker--;
+      currentMessages.removeLast();
+      currentMessages.last.isExpanded = true;
       percentageComplete =
           (progressTracker + 1) / messageService.messagesLibrary.length;
     }
@@ -113,6 +153,8 @@ class DataState {
       ..selectedAncestry = this.selectedAncestry
       ..selectedHeritage = this.selectedHeritage
       ..availableHeritages = this.availableHeritages
-      ..selectedFreeBoosts = this.selectedFreeBoosts;
+      ..selectedFreeBoosts = this.selectedFreeBoosts
+      ..ancestryTabSelection = this.ancestryTabSelection
+      ..heritageTabSelection = this.heritageTabSelection;
   }
 }

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 //layout constants
 
-const kMobileWidth = 1350;
+const kSizeLWidth = 1190;
+const kSizeXLWidth = 1375;
 const kWebHorizontalPadding = 50.0;
 
 const kCharacterSheetDemographicsMaxHeight = 170.0;

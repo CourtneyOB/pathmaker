@@ -63,7 +63,7 @@ class CharacterSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
+    return Expanded(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: screenWidth(context) * 0.001),
         child: Card(

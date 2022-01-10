@@ -12,6 +12,7 @@ class _HeritageTabsState extends ConsumerState<HeritageTabs> {
   @override
   Widget build(BuildContext context) {
     return Tabs(
+      initialTab: ref.watch(dataCoordinatorProvider).heritageTabSelection,
       numberOfTabs:
           ref.watch(dataCoordinatorProvider).availableHeritages.length,
       tabList: ref
@@ -31,6 +32,7 @@ class _HeritageTabsState extends ConsumerState<HeritageTabs> {
       onTap: (index) {
         ref.read(dataCoordinatorProvider.notifier).applyHeritage(
             ref.read(dataCoordinatorProvider).availableHeritages[index]);
+        ref.read(dataCoordinatorProvider.notifier).setHeritageTab(index);
       },
     );
   }

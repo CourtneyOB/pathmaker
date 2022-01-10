@@ -49,6 +49,7 @@ class _AncestryTabsState extends ConsumerState<AncestryTabs> {
   @override
   Widget build(BuildContext context) {
     return Tabs(
+      initialTab: ref.watch(dataCoordinatorProvider).ancestryTabSelection,
       numberOfTabs:
           ref.read(dataCoordinatorProvider).data.AncestryLibrary.length,
       tabList: getTabs(),
@@ -56,6 +57,7 @@ class _AncestryTabsState extends ConsumerState<AncestryTabs> {
       onTap: (index) {
         ref.read(dataCoordinatorProvider.notifier).applyAncestry(
             ref.read(dataCoordinatorProvider).data.AncestryLibrary[index]);
+        ref.read(dataCoordinatorProvider.notifier).setAncestryTab(index);
       },
     );
   }

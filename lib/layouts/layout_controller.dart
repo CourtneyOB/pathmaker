@@ -2,19 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:pathmaker/constants.dart';
 
 class ResponsiveLayout extends StatelessWidget {
-  final Widget webLayout;
-  final Widget mobileLayout;
+  final Widget sizeXLLayout;
+  final Widget sizeMLayout;
+  final Widget sizeLLayout;
 
-  ResponsiveLayout({required this.webLayout, required this.mobileLayout});
+  ResponsiveLayout(
+      {required this.sizeXLLayout,
+      required this.sizeMLayout,
+      required this.sizeLLayout});
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth < kMobileWidth) {
-          return mobileLayout;
+        if (constraints.maxWidth < kSizeLWidth) {
+          return sizeMLayout;
+        }
+        if (constraints.maxWidth < kSizeXLWidth) {
+          return sizeLLayout;
         } else {
-          return webLayout;
+          return sizeXLLayout;
         }
       },
     );
