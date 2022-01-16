@@ -1,66 +1,76 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pathmaker/constants.dart';
 import 'package:pathmaker/main.dart';
 
-class MessageBox extends ConsumerStatefulWidget {
+class MessageBox extends ConsumerWidget {
   MessageBox({required this.contents, required this.id});
 
   final Widget contents;
   final int id;
 
   @override
-  _MessageBoxState createState() => _MessageBoxState();
-}
-
-class _MessageBoxState extends ConsumerState<MessageBox> {
-  bool isDisabled = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              widget.contents,
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                TextButton(
-                    onPressed: () {
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
+      child: Column(
+        children: [
+          contents,
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            TextButton(
+              onPressed: id == 0
+                  ? null
+                  : () {
                       ref
                           .read(dataCoordinatorProvider.notifier)
                           .previousMessage();
                     },
-                    child: Text('Previous')),
-                TextButton(
-                  onPressed: isDisabled
-                      ? null
-                      : ref
-                              .watch(dataCoordinatorProvider)
-                              .messageIsCompleteStatus[widget.id]!
-                          ? () {
-                              setState(() {
-                                isDisabled = true;
-                              });
-                              ref
-                                  .read(dataCoordinatorProvider.notifier)
-                                  .nextMessage();
-                              ref
-                                  .read(dataCoordinatorProvider)
-                                  .initialiseAncestry();
-                            }
-                          : null,
-                  child: Text('Next'),
+              child: Text('Previous'),
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.resolveWith(
+                    (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.disabled)) {
+                    return kDividerColour;
+                  } else {
+                    return Colors.blue.shade800;
+                  }
+                }),
+                overlayColor: MaterialStateProperty.all(
+                  Color(0x20607D8B),
                 ),
-              ]),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 20.0,
-        ),
-      ],
+              ),
+            ),
+            TextButton(
+              onPressed: ref
+                      .watch(dataCoordinatorProvider)
+                      .messageIsCompleteStatus[id]!
+                  ? () {
+                      ref.read(dataCoordinatorProvider.notifier).nextMessage();
+                      ref
+                          .read(dataCoordinatorProvider.notifier)
+                          .buttonFunction(id);
+                    }
+                  : null,
+              child: Text(
+                'Next',
+              ),
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.resolveWith(
+                    (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.disabled)) {
+                    return kDividerColour;
+                  } else {
+                    return Colors.blue.shade800;
+                  }
+                }),
+                overlayColor: MaterialStateProperty.all(
+                  Color(0x20607D8B),
+                ),
+              ),
+            ),
+          ]),
+        ],
+      ),
     );
   }
 }

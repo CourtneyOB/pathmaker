@@ -14,6 +14,10 @@ class Proficiencies extends ConsumerWidget {
             ? 'None'
             : enumListAsString(
                 ref.watch(dataCoordinatorProvider).currentCharacter.languages);
+    final String feats =
+        ref.watch(dataCoordinatorProvider).selectedAncestryFeat == null
+            ? 'None'
+            : ref.watch(dataCoordinatorProvider).selectedAncestryFeat!.name;
     final String traits = ref
             .watch(dataCoordinatorProvider)
             .currentCharacter
@@ -23,11 +27,10 @@ class Proficiencies extends ConsumerWidget {
         : ref.watch(dataCoordinatorProvider).currentCharacter.traits.join(', ');
 
     return CharacterSheetBox(
-      label: 'Proficiencies',
-      padding: true,
-      height: 300,
-      content: Column(
-        children: [
+        label: 'Proficiencies',
+        padding: true,
+        height: 325,
+        content: Column(children: [
           Wrap(
             spacing: 10.0,
             runSpacing: 10.0,
@@ -53,11 +56,7 @@ class Proficiencies extends ConsumerWidget {
               ],
             ),
           ),
-          Row(
-            children: [
-              Text(languages),
-            ],
-          ),
+          Align(alignment: Alignment.centerLeft, child: Text(languages)),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: Row(
@@ -67,11 +66,7 @@ class Proficiencies extends ConsumerWidget {
               ],
             ),
           ),
-          Row(
-            children: [
-              Text('List feats here'),
-            ],
-          ),
+          Align(alignment: Alignment.centerLeft, child: Text(feats)),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: Row(
@@ -81,13 +76,7 @@ class Proficiencies extends ConsumerWidget {
               ],
             ),
           ),
-          Row(
-            children: [
-              Text(traits),
-            ],
-          ),
-        ],
-      ),
-    );
+          Align(alignment: Alignment.centerLeft, child: Text(traits)),
+        ]));
   }
 }

@@ -4,22 +4,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pathmaker/enum.dart';
 import 'package:pathmaker/main.dart';
 
-class MultiSelect extends ConsumerStatefulWidget {
+class AbilityMultiSelect extends ConsumerStatefulWidget {
   int maxSelection;
 
-  MultiSelect({required this.maxSelection});
+  AbilityMultiSelect({required this.maxSelection});
 
   @override
-  _MultiSelectState createState() => _MultiSelectState();
+  _AbilityMultiSelectState createState() => _AbilityMultiSelectState();
 }
 
-class _MultiSelectState extends ConsumerState<MultiSelect> {
+class _AbilityMultiSelectState extends ConsumerState<AbilityMultiSelect> {
   void _showMultiSelect(BuildContext context) async {
-    List<MultiSelectDialogItem> getItems() {
-      List<MultiSelectDialogItem> items = [];
+    List<AbilityMultiSelectDialogItem> getItems() {
+      List<AbilityMultiSelectDialogItem> items = [];
       for (Ability ability
           in ref.read(dataCoordinatorProvider).ancestryAvailableBoosts) {
-        items.add(MultiSelectDialogItem(
+        items.add(AbilityMultiSelectDialogItem(
             value: ability, label: ability.stringValue()));
       }
       return items;
@@ -28,7 +28,7 @@ class _MultiSelectState extends ConsumerState<MultiSelect> {
     List<Ability> selectedAbilities = await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return MultiSelectDialog(
+        return AbilityMultiSelectDialog(
           items: getItems(),
           selectionCount: widget.maxSelection,
         );
@@ -65,17 +65,18 @@ class _MultiSelectState extends ConsumerState<MultiSelect> {
   }
 }
 
-class MultiSelectDialog extends StatefulWidget {
-  final List<MultiSelectDialogItem> items;
+class AbilityMultiSelectDialog extends StatefulWidget {
+  final List<AbilityMultiSelectDialogItem> items;
   final int selectionCount;
 
-  MultiSelectDialog({required this.items, required this.selectionCount});
+  AbilityMultiSelectDialog({required this.items, required this.selectionCount});
 
   @override
-  _MultiSelectDialogState createState() => _MultiSelectDialogState();
+  _AbilityMultiSelectDialogState createState() =>
+      _AbilityMultiSelectDialogState();
 }
 
-class _MultiSelectDialogState extends State<MultiSelectDialog> {
+class _AbilityMultiSelectDialogState extends State<AbilityMultiSelectDialog> {
   List<Ability> _selectedAbilities = [];
   bool isFull = false;
 
@@ -100,7 +101,7 @@ class _MultiSelectDialogState extends State<MultiSelectDialog> {
     });
   }
 
-  Widget _buildItem(MultiSelectDialogItem item) {
+  Widget _buildItem(AbilityMultiSelectDialogItem item) {
     final checked = _selectedAbilities.contains(item.value);
     return CheckboxListTile(
       value: checked,
@@ -139,8 +140,8 @@ class _MultiSelectDialogState extends State<MultiSelectDialog> {
   }
 }
 
-class MultiSelectDialogItem {
-  MultiSelectDialogItem({required this.value, required this.label});
+class AbilityMultiSelectDialogItem {
+  AbilityMultiSelectDialogItem({required this.value, required this.label});
   final Ability value;
   final String label;
 }

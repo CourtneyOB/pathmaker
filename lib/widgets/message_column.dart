@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pathmaker/main.dart';
 import 'package:pathmaker/model/message.dart';
-import 'package:pathmaker/widgets/message_box.dart';
 
 class MessageColumn extends ConsumerWidget {
   const MessageColumn({
@@ -13,9 +12,6 @@ class MessageColumn extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final List<Message> messages =
         ref.watch(dataCoordinatorProvider).currentMessages;
-
-    // final List<MessageBox> messages =
-    //      ref.watch(dataCoordinatorProvider).currentMessages;
 
     return Expanded(
       child: Padding(

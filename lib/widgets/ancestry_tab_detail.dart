@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pathmaker/widgets/multiselect.dart';
+import 'package:pathmaker/widgets/ability_multiselect.dart';
 import 'package:pathmaker/constants.dart';
+import 'package:pathmaker/widgets/feat_select.dart';
 
 class TabDetail extends StatelessWidget {
   final String text;
@@ -41,9 +42,16 @@ class TabDetail extends StatelessWidget {
       ));
     }
 
-    content.add(MultiSelect(
+    content.add(AbilityMultiSelect(
       maxSelection: optionalBoosts,
     ));
+
+    content.add(Text(
+      '\nChoose an ancestry feat:',
+      style: TextStyle(fontWeight: FontWeight.bold),
+    ));
+
+    content.add(FeatSelect());
 
     return content;
   }

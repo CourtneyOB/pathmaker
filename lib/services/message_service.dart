@@ -35,7 +35,7 @@ class MessageService {
           id: 2,
           contents: Column(
             children: [
-              Text('Ancestry continued...'),
+              Text('Choose a heritage'),
               Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: 10.0, horizontal: 30.0),
@@ -43,6 +43,21 @@ class MessageService {
               ),
             ],
           ),
-        ))
+        )),
+    Message(
+        headerValue: 'Ancestry Feat',
+        expandedValue: MessageBox(
+          id: 3,
+          contents: Column(
+            children: [
+              Text('Choose an ancestry feat'),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 10.0, horizontal: 30.0),
+                child: Text('Details here'),
+              ),
+            ],
+          ),
+        )),
   ];
 }

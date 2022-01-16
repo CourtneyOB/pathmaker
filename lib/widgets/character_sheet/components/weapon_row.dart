@@ -15,7 +15,7 @@ class WeaponRow extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SkillBoxWithTraining(width: 200.0, training: 'T', label: name),
+            SkillBoxWithTraining(width: 150.0, training: 'T', label: name),
             Expanded(
               child: Container(),
             ),

@@ -21,12 +21,6 @@ class Tabs extends ConsumerStatefulWidget {
 }
 
 class _TabsState extends ConsumerState<Tabs> {
-  List<Widget> getDetail() {
-    List<Widget> tabDetail = [];
-
-    return tabDetail;
-  }
-
   int _selectedTab = 0;
 
   @override

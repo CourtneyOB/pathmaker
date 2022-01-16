@@ -7,6 +7,26 @@ enum Ability {
   str,
 }
 
+enum Skill {
+  acrobatics,
+  arcana,
+  athletics,
+  crafting,
+  deception,
+  diplomacy,
+  intimidation,
+  lore,
+  medicine,
+  nature,
+  occultism,
+  performance,
+  religion,
+  society,
+  stealth,
+  survival,
+  thievery
+}
+
 enum Language {
   common,
   dwarven,

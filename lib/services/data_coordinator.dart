@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pathmaker/data/pathfinder_data.dart';
 import 'package:pathmaker/model/character.dart';
@@ -7,28 +6,35 @@ import 'package:pathmaker/model/ancestry.dart';
 import 'package:pathmaker/enum.dart';
 import 'package:pathmaker/model/heritage.dart';
 import 'package:pathmaker/model/message.dart';
+import 'package:pathmaker/model/feat.dart';
 
 class DataCoordinator extends StateNotifier<DataState> {
   DataCoordinator(DataState state) : super(state);
 
-  void applyAncestry(Ancestry ancestry) {
-    state.selectedAncestry = ancestry;
+  //called when switching tabs on message 1
+  void applyAncestry(int id) {
+    state.selectedAncestry = state.data.getAncestryByID(id);
     state.ancestryAvailableBoosts =
         state.currentCharacter.chooseAncestry(state.selectedAncestry!);
+
+    //remove existing heritage and feat
+    state.selectedHeritage = null;
+    state.selectedAncestryFeat = null;
 
     //remove existing boosts, then empty the list
     for (Ability ability in state.selectedFreeBoosts) {
       state.currentCharacter.modifyAbilityScore(ability, -2);
     }
     state.selectedFreeBoosts = [];
+    state.messageIsCompleteStatus[1] = false;
 
-    state.availableHeritages = ancestry.heritages;
+    state.availableHeritages = state.selectedAncestry!.heritages;
+    state.availableAncestryFeats = state.selectedAncestry!.feats;
 
     state = state.clone();
-
-    //TODO heritage, ancestry feat, languages
   }
 
+  //called by dialog box from message 1
   void applyFreeBoosts(List<Ability> abilities) {
     //remove existing boosts
     for (Ability ability in state.selectedFreeBoosts) {
@@ -45,20 +51,27 @@ class DataCoordinator extends StateNotifier<DataState> {
     state = state.clone();
   }
 
-  void applyHeritage(Heritage heritage) {
-    state.selectedHeritage = heritage;
+  //called when switching tabs on message 2
+  void applyHeritage(int id) {
+    state.selectedHeritage =
+        state.data.getHeritageByID(state.selectedAncestry!.id, id);
     state.currentCharacter.chooseHeritage(state.selectedHeritage!);
     state = state.clone();
   }
 
-  void setAncestryTab(int index) {
-    state.ancestryTabSelection = index;
+  void applyAncestryFeat(int id) {
+    state.selectedAncestryFeat =
+        state.data.getFeatByID(state.selectedAncestry!.id, id);
+    state.currentCharacter.chooseAncestryFeat(state.selectedAncestryFeat!);
     state = state.clone();
   }
 
-  void setHeritageTab(int index) {
-    state.heritageTabSelection = index;
-    state = state.clone();
+  void buttonFunction(int index) {
+    if (index == 0) {
+      state.initialiseAncestry();
+    } else if (index == 1) {
+      state.initialiseHeritage();
+    }
   }
 
   void nextMessage() {
@@ -86,7 +99,9 @@ class DataState {
   Character currentCharacter = Character();
   Ancestry? selectedAncestry;
   Heritage? selectedHeritage;
+  Feat? selectedAncestryFeat;
   List<Heritage> availableHeritages = [];
+  List<Feat> availableAncestryFeats = [];
   List<Ability> ancestryAvailableBoosts = [];
   List<Ability> selectedFreeBoosts = [];
 
@@ -94,10 +109,6 @@ class DataState {
   MessageService messageService = MessageService();
   List<Message> currentMessages = [];
   Map<int, bool> messageIsCompleteStatus = {};
-
-  //tabs
-  int ancestryTabSelection = 0;
-  int heritageTabSelection = 0;
 
   //progress
   int progressTracker = 0;
@@ -115,6 +126,15 @@ class DataState {
       ancestryAvailableBoosts =
           currentCharacter.chooseAncestry(selectedAncestry!);
       availableHeritages = selectedAncestry!.heritages;
+      availableAncestryFeats = selectedAncestry!.feats;
+    }
+  }
+
+  void initialiseHeritage() {
+    if (selectedAncestry != null && selectedHeritage == null) {
+      selectedHeritage = availableHeritages[0];
+      currentCharacter.chooseHeritage(selectedHeritage!);
+      messageIsCompleteStatus[2] = true;
     }
   }
 
@@ -154,7 +174,7 @@ class DataState {
       ..selectedHeritage = this.selectedHeritage
       ..availableHeritages = this.availableHeritages
       ..selectedFreeBoosts = this.selectedFreeBoosts
-      ..ancestryTabSelection = this.ancestryTabSelection
-      ..heritageTabSelection = this.heritageTabSelection;
+      ..availableAncestryFeats = this.availableAncestryFeats
+      ..selectedAncestryFeat = this.selectedAncestryFeat;
   }
 }

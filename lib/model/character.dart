@@ -1,6 +1,7 @@
 import 'package:pathmaker/enum.dart';
 import 'package:pathmaker/model/ancestry.dart';
 import 'package:pathmaker/model/heritage.dart';
+import 'package:pathmaker/model/feat.dart';
 
 class Character {
   String _name = "ReallyReallyLongName";
@@ -9,6 +10,7 @@ class Character {
   int _speed = 0;
   List<Language> _languages = [];
   List<String> _traits = [];
+  List<String> _characteristics = [];
 
   Map<Ability, int> _abilityScores = {
     Ability.cha: 10,
@@ -25,11 +27,13 @@ class Character {
   int get speed => _speed;
   List<Language> get languages => _languages;
   List<String> get traits => _traits;
+  List<String> get characteristics => _characteristics;
   Map<Ability, int> get abilityScores => _abilityScores;
 
   //Background
   Ancestry? _ancestry;
   Heritage? _heritage;
+  Feat? _ancestryFeat;
 
   List<Ability> chooseAncestry(Ancestry newAncestry) {
     if (newAncestry == _ancestry) {
@@ -50,6 +54,12 @@ class Character {
       List<Ability> flaws = _ancestry!.getFlaws();
       for (Ability ability in flaws) {
         modifyAbilityScore(ability, 2);
+      }
+
+      //remove heritage if selected
+      if (_heritage != null) {
+        _characteristics.remove(_heritage!.description);
+        _heritage = null;
       }
     }
     //add boosts
@@ -82,7 +92,22 @@ class Character {
     if (_heritage == newHeritage) {
       return;
     }
+    if (_heritage != null) {
+      _characteristics.remove(_heritage!.description);
+    }
     _heritage = newHeritage;
+    _characteristics.add(_heritage!.description);
+  }
+
+  void chooseAncestryFeat(Feat newFeat) {
+    if (_ancestryFeat == newFeat) {
+      return;
+    }
+    if (_ancestryFeat != null) {
+      //remove attributes associated with feat
+    }
+    _ancestryFeat = newFeat;
+    //add attributes associated with feat
   }
 
   void modifyAbilityScore(Ability ability, int modifier) {

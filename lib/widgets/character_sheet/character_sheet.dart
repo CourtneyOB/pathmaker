@@ -6,8 +6,9 @@ import 'package:pathmaker/widgets/character_sheet/character_sheet_stat_stacks.da
 import 'package:pathmaker/widgets/character_sheet/components/character_sheet_box.dart';
 import 'package:pathmaker/widgets/character_sheet/components/weapon_row.dart';
 import 'package:pathmaker/widgets/character_sheet/proficiencies.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CharacterSheet extends StatelessWidget {
+class CharacterSheet extends ConsumerWidget {
   const CharacterSheet({
     Key? key,
   }) : super(key: key);
@@ -24,7 +25,6 @@ class CharacterSheet extends StatelessWidget {
       'Intimidation',
       'Lore',
       'Medicine',
-      'Nature',
     ];
 
     for (String s in skillNames) {
@@ -40,7 +40,6 @@ class CharacterSheet extends StatelessWidget {
   List<Widget> getSkills2() {
     List<Widget> skills = [];
     List<String> skillNames = [
-      'Medicine',
       'Nature',
       'Occultism',
       'Performance',
@@ -62,7 +61,7 @@ class CharacterSheet extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Expanded(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: screenWidth(context) * 0.001),
@@ -86,7 +85,7 @@ class CharacterSheet extends StatelessWidget {
                           children: [
                             CharacterSheetBox(
                               padding: false,
-                              height: 360,
+                              height: 325,
                               label: 'Skills',
                               content: Padding(
                                 padding:
@@ -135,32 +134,60 @@ class CharacterSheet extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: CharacterSheetBox(
-                        padding: true,
-                        height: 360,
-                        label: 'Weapons',
-                        content: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            WeaponRow(
-                              name: 'Dagger',
-                              modifier: '+2',
-                              damage: '1d4',
-                            ),
-                            WeaponRow(
-                                name: 'Crossbow',
-                                modifier: '-2',
-                                damage: '1d6'),
-                            WeaponRow(
-                                name: 'Sling', modifier: '+1', damage: '1d4+1'),
-                            WeaponRow(
-                                name: 'Poison Dart',
-                                modifier: '+1',
-                                damage: '1d6+2'),
-                          ],
+                      flex: 6,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            right: screenWidth(context) * 0.005),
+                        child: CharacterSheetBox(
+                          label: 'Characteristics',
+                          padding: true,
+                          height: 360,
+                          content: Column(
+                            children: ref
+                                .watch(dataCoordinatorProvider)
+                                .currentCharacter
+                                .characteristics
+                                .map((item) {
+                              return Text(item);
+                            }).toList(),
+                          ),
                         ),
                       ),
-                    )
+                    ),
+                    Expanded(
+                      flex: 5,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.only(left: screenWidth(context) * 0.005),
+                        child: CharacterSheetBox(
+                          padding: true,
+                          height: 360,
+                          label: 'Weapons',
+                          content: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              WeaponRow(
+                                name: 'Dagger',
+                                modifier: '+2',
+                                damage: '1d4',
+                              ),
+                              WeaponRow(
+                                  name: 'Crossbow',
+                                  modifier: '-2',
+                                  damage: '1d6'),
+                              WeaponRow(
+                                  name: 'Sling',
+                                  modifier: '+1',
+                                  damage: '1d4+1'),
+                              WeaponRow(
+                                  name: 'Poison Dart',
+                                  modifier: '+1',
+                                  damage: '1d6+2'),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ) // THIRD ROW
               ],
