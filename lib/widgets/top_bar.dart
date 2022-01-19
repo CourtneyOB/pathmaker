@@ -5,10 +5,6 @@ import 'package:pathmaker/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TopBar extends ConsumerWidget {
-  const TopBar({
-    Key? key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(

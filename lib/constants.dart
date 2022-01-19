@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 //layout constants
 
+const kSizeMWidth = 910;
 const kSizeLWidth = 1190;
 const kSizeXLWidth = 1375;
 const kWebHorizontalPadding = 50.0;

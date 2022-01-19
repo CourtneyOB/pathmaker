@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pathmaker/enum.dart';
 import 'package:pathmaker/main.dart';
-import 'package:pathmaker/widgets/ancestry_tab_detail.dart';
+import 'package:pathmaker/widgets/tab_detail.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pathmaker/model/ancestry.dart';
 import 'package:pathmaker/widgets/tabs.dart';
@@ -22,8 +22,8 @@ class _AncestryTabsState extends ConsumerState<AncestryTabs> {
     return tabs;
   }
 
-  List<TabDetail> getTabDetails() {
-    List<TabDetail> tabDetails = [];
+  List<AncestryTabDetail> getTabDetails() {
+    List<AncestryTabDetail> tabDetails = [];
     for (Ancestry ancestry
         in ref.read(dataCoordinatorProvider).data.AncestryLibrary) {
       List<String> boosts = [];
@@ -36,10 +36,10 @@ class _AncestryTabsState extends ConsumerState<AncestryTabs> {
         flaws.add(ability.stringValue());
       }
 
-      TabDetail newTabDetail = TabDetail(
+      AncestryTabDetail newTabDetail = AncestryTabDetail(
           text: ancestry.description,
-          boosts: boosts.join(', '),
-          flaws: flaws.join(', '),
+          boosts: boosts.isEmpty ? 'None' : boosts.join(', '),
+          flaws: flaws.isEmpty ? 'None' : flaws.join(', '),
           optionalBoosts: ancestry.freeBoosts);
       tabDetails.add(newTabDetail);
     }

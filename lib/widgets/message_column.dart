@@ -13,28 +13,26 @@ class MessageColumn extends ConsumerWidget {
     final List<Message> messages =
         ref.watch(dataCoordinatorProvider).currentMessages;
 
-    return Expanded(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: screenWidth(context) * 0.001),
-        child: ExpansionPanelList(
-          key: ValueKey(
-              ref.watch(dataCoordinatorProvider).currentMessages.length),
-          expansionCallback: (int index, bool isExpanded) {
-            ref.read(dataCoordinatorProvider.notifier).expandMessage(index);
-          },
-          children: messages.map<ExpansionPanel>((Message message) {
-            return ExpansionPanel(
-              hasIcon: false,
-              headerBuilder: (BuildContext context, bool isExpanded) {
-                return ListTile(
-                  title: Text(message.headerValue),
-                );
-              },
-              body: message.expandedValue,
-              isExpanded: message.isExpanded,
-            );
-          }).toList(),
-        ),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: screenWidth(context) * 0.001),
+      child: ExpansionPanelList(
+        key:
+            ValueKey(ref.watch(dataCoordinatorProvider).currentMessages.length),
+        expansionCallback: (int index, bool isExpanded) {
+          ref.read(dataCoordinatorProvider.notifier).expandMessage(index);
+        },
+        children: messages.map<ExpansionPanel>((Message message) {
+          return ExpansionPanel(
+            hasIcon: false,
+            headerBuilder: (BuildContext context, bool isExpanded) {
+              return ListTile(
+                title: Text(message.headerValue),
+              );
+            },
+            body: message.expandedValue,
+            isExpanded: message.isExpanded,
+          );
+        }).toList(),
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pathmaker/data/pathfinder_data.dart';
 import 'package:pathmaker/model/character.dart';
-import 'package:pathmaker/services/message_service.dart';
+import 'package:pathmaker/data/message_data.dart';
 import 'package:pathmaker/model/ancestry.dart';
 import 'package:pathmaker/enum.dart';
 import 'package:pathmaker/model/heritage.dart';
@@ -64,6 +64,9 @@ class DataCoordinator extends StateNotifier<DataState> {
         state.data.getFeatByID(state.selectedAncestry!.id, id);
     state.currentCharacter.chooseAncestryFeat(state.selectedAncestryFeat!);
     state = state.clone();
+
+    //TODO implement other parts of ancestry feats
+    //TODO Save whether they need to pick an extra feat later
   }
 
   void buttonFunction(int index) {
@@ -106,7 +109,7 @@ class DataState {
   List<Ability> selectedFreeBoosts = [];
 
   //messages
-  MessageService messageService = MessageService();
+  MessageData messageService = MessageData();
   List<Message> currentMessages = [];
   Map<int, bool> messageIsCompleteStatus = {};
 

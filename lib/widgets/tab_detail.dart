@@ -3,13 +3,13 @@ import 'package:pathmaker/widgets/ability_multiselect.dart';
 import 'package:pathmaker/constants.dart';
 import 'package:pathmaker/widgets/feat_select.dart';
 
-class TabDetail extends StatelessWidget {
+class AncestryTabDetail extends StatelessWidget {
   final String text;
   final String boosts;
   final String flaws;
   final int optionalBoosts;
 
-  TabDetail(
+  AncestryTabDetail(
       {required this.text,
       required this.boosts,
       required this.flaws,
@@ -67,6 +67,31 @@ class TabDetail extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: getContent(),
+        ),
+      ),
+    );
+  }
+}
+
+class HeritageTabDetail extends StatelessWidget {
+  HeritageTabDetail({required this.content});
+
+  final String content;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 60.0,
+      decoration: BoxDecoration(
+        border: Border.all(color: kDividerColour),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(content),
+          ],
         ),
       ),
     );

@@ -7,6 +7,10 @@ import 'package:pathmaker/widgets/character_sheet/components/stat_stack.dart';
 import 'package:pathmaker/enum.dart';
 
 class AbilityScores extends ConsumerWidget {
+  AbilityScores({this.singleRow = true});
+
+  final bool singleRow;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String str = ref
@@ -14,7 +18,7 @@ class AbilityScores extends ConsumerWidget {
         .currentCharacter
         .abilityScores[Ability.str]
         .toString();
-    final String strModifier = convertToModifier(ref
+    final String strModifier = convertToStringModifier(ref
         .watch(dataCoordinatorProvider)
         .currentCharacter
         .abilityScores[Ability.str]!);
@@ -23,7 +27,7 @@ class AbilityScores extends ConsumerWidget {
         .currentCharacter
         .abilityScores[Ability.con]
         .toString();
-    final String conModifier = convertToModifier(ref
+    final String conModifier = convertToStringModifier(ref
         .watch(dataCoordinatorProvider)
         .currentCharacter
         .abilityScores[Ability.con]!);
@@ -32,7 +36,7 @@ class AbilityScores extends ConsumerWidget {
         .currentCharacter
         .abilityScores[Ability.dex]
         .toString();
-    final String dexModifier = convertToModifier(ref
+    final String dexModifier = convertToStringModifier(ref
         .watch(dataCoordinatorProvider)
         .currentCharacter
         .abilityScores[Ability.dex]!);
@@ -41,7 +45,7 @@ class AbilityScores extends ConsumerWidget {
         .currentCharacter
         .abilityScores[Ability.intl]
         .toString();
-    final String intlModifier = convertToModifier(ref
+    final String intlModifier = convertToStringModifier(ref
         .watch(dataCoordinatorProvider)
         .currentCharacter
         .abilityScores[Ability.intl]!);
@@ -50,7 +54,7 @@ class AbilityScores extends ConsumerWidget {
         .currentCharacter
         .abilityScores[Ability.cha]
         .toString();
-    final String chaModifier = convertToModifier(ref
+    final String chaModifier = convertToStringModifier(ref
         .watch(dataCoordinatorProvider)
         .currentCharacter
         .abilityScores[Ability.cha]!);
@@ -59,62 +63,129 @@ class AbilityScores extends ConsumerWidget {
         .currentCharacter
         .abilityScores[Ability.wis]
         .toString();
-    final String wisModifier = convertToModifier(ref
+    final String wisModifier = convertToStringModifier(ref
         .watch(dataCoordinatorProvider)
         .currentCharacter
         .abilityScores[Ability.wis]!);
 
-    return CharacterSheetBox(
-      padding: false,
-      height: 100.0,
-      label: 'Ability Scores',
-      content: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          StatStack(
-            stat: 'STR',
-            value: strModifier,
-            topIcon: ModifierCircle(
-              value: str,
-            ),
+    return LayoutBuilder(builder: (context, constraints) {
+      if (!singleRow) {
+        return CharacterSheetBox(
+          padding: false,
+          height: 185.0,
+          label: 'Ability Scores',
+          content: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  StatStack(
+                    stat: 'STR',
+                    value: strModifier,
+                    topIcon: ModifierCircle(
+                      value: str,
+                    ),
+                  ),
+                  StatStack(
+                    stat: 'DEX',
+                    value: dexModifier,
+                    topIcon: ModifierCircle(
+                      value: dex,
+                    ),
+                  ),
+                  StatStack(
+                    stat: 'CON',
+                    value: conModifier,
+                    topIcon: ModifierCircle(
+                      value: con,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  StatStack(
+                    stat: 'INT',
+                    value: intlModifier,
+                    topIcon: ModifierCircle(
+                      value: intl,
+                    ),
+                  ),
+                  StatStack(
+                    stat: 'WIS',
+                    value: wisModifier,
+                    topIcon: ModifierCircle(
+                      value: wis,
+                    ),
+                  ),
+                  StatStack(
+                    stat: 'CHA',
+                    value: chaModifier,
+                    topIcon: ModifierCircle(
+                      value: cha,
+                    ),
+                  ),
+                ],
+              )
+            ],
           ),
-          StatStack(
-            stat: 'DEX',
-            value: dexModifier,
-            topIcon: ModifierCircle(
-              value: dex,
-            ),
+        );
+      } else {
+        return CharacterSheetBox(
+          padding: false,
+          height: 100.0,
+          label: 'Ability Scores',
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              StatStack(
+                stat: 'STR',
+                value: strModifier,
+                topIcon: ModifierCircle(
+                  value: str,
+                ),
+              ),
+              StatStack(
+                stat: 'DEX',
+                value: dexModifier,
+                topIcon: ModifierCircle(
+                  value: dex,
+                ),
+              ),
+              StatStack(
+                stat: 'CON',
+                value: conModifier,
+                topIcon: ModifierCircle(
+                  value: con,
+                ),
+              ),
+              StatStack(
+                stat: 'INT',
+                value: intlModifier,
+                topIcon: ModifierCircle(
+                  value: intl,
+                ),
+              ),
+              StatStack(
+                stat: 'WIS',
+                value: wisModifier,
+                topIcon: ModifierCircle(
+                  value: wis,
+                ),
+              ),
+              StatStack(
+                stat: 'CHA',
+                value: chaModifier,
+                topIcon: ModifierCircle(
+                  value: cha,
+                ),
+              ),
+            ],
           ),
-          StatStack(
-            stat: 'CON',
-            value: conModifier,
-            topIcon: ModifierCircle(
-              value: con,
-            ),
-          ),
-          StatStack(
-            stat: 'INT',
-            value: intlModifier,
-            topIcon: ModifierCircle(
-              value: intl,
-            ),
-          ),
-          StatStack(
-            stat: 'WIS',
-            value: wisModifier,
-            topIcon: ModifierCircle(
-              value: wis,
-            ),
-          ),
-          StatStack(
-            stat: 'CHA',
-            value: chaModifier,
-            topIcon: ModifierCircle(
-              value: cha,
-            ),
-          ),
-        ],
-      ),
-    );
+        );
+      }
+    });
   }
 }

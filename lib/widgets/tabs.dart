@@ -29,6 +29,7 @@ class _TabsState extends ConsumerState<Tabs> {
       initialIndex: widget.initialTab,
       length: widget.numberOfTabs,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             height: 40.0,
@@ -49,6 +50,7 @@ class _TabsState extends ConsumerState<Tabs> {
             height: 6.0,
           ),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               widget.tabDetailList[_selectedTab],
             ],

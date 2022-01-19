@@ -5,7 +5,7 @@ import 'package:pathmaker/widgets/character_sheet/character_sheet.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pathmaker/widgets/message_column.dart';
 
-class WebLayout extends ConsumerWidget {
+class SizeLLayout extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -14,16 +14,13 @@ class WebLayout extends ConsumerWidget {
         child: Padding(
           padding:
               EdgeInsets.symmetric(horizontal: screenWidth(context) * 0.01),
-          child: Column(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TopBar(),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MessageColumn(),
-                  CharacterSheet(),
-                ],
-              ),
+              Expanded(child: MessageColumn()),
+              ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 665),
+                  child: CharacterSheet()),
             ],
           ),
         ),

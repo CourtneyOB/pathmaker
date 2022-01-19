@@ -9,7 +9,8 @@ class LevelCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double size = screenWidth(context) * 0.06;
+    double size =
+        screenWidth(context) < kSizeLWidth ? 75.0 : screenWidth(context) * 0.06;
 
     return ConstrainedBox(
       constraints: BoxConstraints(maxWidth: 100.0, maxHeight: 100.0),

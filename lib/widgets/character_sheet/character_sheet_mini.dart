@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:pathmaker/main.dart';
-import 'package:pathmaker/widgets/character_sheet/character_sheet_demographics.dart';
-import 'package:pathmaker/widgets/character_sheet/character_sheet_detail_blocks.dart';
-import 'package:pathmaker/widgets/character_sheet/character_sheet_stat_stacks.dart';
-
+import 'package:pathmaker/widgets/character_sheet/components/skill_modifier.dart';
+import 'package:pathmaker/widgets/character_sheet/character_sheet_demographics_mini.dart';
+import 'package:pathmaker/widgets/character_sheet/ability_scores.dart';
+import 'package:pathmaker/widgets/character_sheet/skills.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CharacterSheet extends ConsumerWidget {
-  const CharacterSheet({
+class CharacterSheetMini extends ConsumerWidget {
+  const CharacterSheetMini({
     Key? key,
   }) : super(key: key);
 
@@ -21,9 +21,11 @@ class CharacterSheet extends ConsumerWidget {
           padding: EdgeInsets.all(screenWidth(context) * 0.015),
           child: Column(
             children: [
-              CharacterSheetDemographics(),
-              CharacterSheetStatStacks(),
-              CharacterSheetDetailBlocks(),
+              CharacterSheetDemographicsMini(),
+              AbilityScores(
+                singleRow: false,
+              ),
+              Skills(),
             ],
           ),
         ),

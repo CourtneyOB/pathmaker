@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pathmaker/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pathmaker/widgets/tab_detail.dart';
 import 'package:pathmaker/widgets/tabs.dart';
 
 class HeritageTabs extends ConsumerStatefulWidget {
@@ -27,7 +28,7 @@ class _HeritageTabsState extends ConsumerState<HeritageTabs> {
           .watch(dataCoordinatorProvider)
           .availableHeritages
           .map<Widget>((item) {
-        return Text(item.description);
+        return HeritageTabDetail(content: item.description);
       }).toList(),
       onTap: (index) {
         ref.read(dataCoordinatorProvider.notifier).applyHeritage(index);

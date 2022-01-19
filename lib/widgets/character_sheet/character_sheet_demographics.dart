@@ -20,113 +20,238 @@ class CharacterSheetDemographics extends ConsumerWidget {
     final String speed =
         ref.watch(dataCoordinatorProvider).currentCharacter.speed.toString();
 
-    return Row(
-      children: [
-        ConstrainedBox(
-          constraints:
-              BoxConstraints(maxHeight: kCharacterSheetDemographicsMaxHeight),
-          child: Container(
-            decoration: BoxDecoration(
-                border: Border.all(
-              color: kDividerColour,
-            )),
-            child: Image.asset(
-              'lib/images/placeholder_image.png',
-            ),
-          ),
-        ), //IMAGE
-        Expanded(
-          child: ConstrainedBox(
-            constraints:
-                BoxConstraints(maxHeight: kCharacterSheetDemographicsMaxHeight),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return LayoutBuilder(builder: (context, constraints) {
+      if (screenWidth(context) < 800) {
+        return Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextBlock(
-                      label: 'Name',
-                      value: name,
-                    ),
-                    TextBlock(
-                      label: 'Class',
-                      value: 'Alchemist',
-                    ),
-                  ],
+                Text(
+                  'Level 1',
+                  style: TextStyle(
+                    color: kDarkPrimaryColour,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                  ),
+                ),
+                SizedBox(
+                  width: 10.0,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextBlock(
-                      label: 'Ancestry',
-                      value: ancestry,
+                    Icon(
+                      Icons.directions_run,
+                      color: kPrimaryColour,
+                      size: 32.0,
                     ),
-                    TextBlock(
-                      label: 'Alignment',
-                      value: 'Neutral',
+                    SizedBox(
+                      width: 5.0,
                     ),
+                    Text('$speed ft'),
                   ],
                 ),
+                SizedBox(
+                  width: 10.0,
+                ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextBlock(
-                      label: 'Background',
-                      value: 'Mechanic',
+                    Icon(
+                      Icons.straighten,
+                      color: kPrimaryColour,
+                      size: 32.0,
                     ),
-                    TextBlock(
-                      label: 'Another Box',
-                      value: '',
+                    SizedBox(
+                      width: 5.0,
                     ),
+                    Text('$size'),
                   ],
                 ),
               ],
             ),
-          ),
-        ),
-        Column(
-          children: [
-            LevelCircle(),
             SizedBox(
               height: 10.0,
             ),
-            Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.directions_run,
-                        color: kPrimaryColour,
-                        size: 32.0,
-                      ),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text('$speed ft'),
-                    ],
+            Row(
+              children: [
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                      maxHeight: kCharacterSheetDemographicsMaxHeight),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                      color: kDividerColour,
+                    )),
+                    child: Image.asset(
+                      'lib/images/placeholder_image.png',
+                    ),
                   ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.straighten,
-                        color: kPrimaryColour,
-                        size: 32.0,
-                      ),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text('$size'),
-                    ],
+                ), //IMAGE
+                Expanded(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                        maxHeight: kCharacterSheetDemographicsMaxHeight),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextBlock(
+                              label: 'Name',
+                              value: name,
+                            ),
+                            TextBlock(
+                              label: 'Class',
+                              value: 'Alchemist',
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextBlock(
+                              label: 'Ancestry',
+                              value: ancestry,
+                            ),
+                            TextBlock(
+                              label: 'Alignment',
+                              value: 'Neutral',
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextBlock(
+                              label: 'Background',
+                              value: 'Mechanic',
+                            ),
+                            TextBlock(
+                              label: 'Another Box',
+                              value: '',
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
-        ),
-      ],
-    );
+        );
+      } else {
+        return Row(
+          children: [
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                  maxHeight: kCharacterSheetDemographicsMaxHeight),
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(
+                  color: kDividerColour,
+                )),
+                child: Image.asset(
+                  'lib/images/placeholder_image.png',
+                  width: screenWidth(context) < 800 ? 160 : null,
+                ),
+              ),
+            ), //IMAGE
+            Expanded(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                    maxHeight: kCharacterSheetDemographicsMaxHeight),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        TextBlock(
+                          label: 'Name',
+                          value: name,
+                        ),
+                        TextBlock(
+                          label: 'Class',
+                          value: 'Alchemist',
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        TextBlock(
+                          label: 'Ancestry',
+                          value: ancestry,
+                        ),
+                        TextBlock(
+                          label: 'Alignment',
+                          value: 'Neutral',
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        TextBlock(
+                          label: 'Background',
+                          value: 'Mechanic',
+                        ),
+                        TextBlock(
+                          label: 'Another Box',
+                          value: '',
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Column(
+              children: [
+                LevelCircle(),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.directions_run,
+                            color: kPrimaryColour,
+                            size: 32.0,
+                          ),
+                          SizedBox(
+                            width: 5.0,
+                          ),
+                          Text('$speed ft'),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.straighten,
+                            color: kPrimaryColour,
+                            size: 32.0,
+                          ),
+                          SizedBox(
+                            width: 5.0,
+                          ),
+                          Text('$size'),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      }
+    });
   }
 }

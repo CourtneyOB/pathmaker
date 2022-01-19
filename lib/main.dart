@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pathmaker/screens/character_sheet_fullscreen.dart';
 import 'screens/homepage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pathmaker/model/character.dart';
-import 'package:pathmaker/services/message_service.dart';
+import 'package:pathmaker/data/message_data.dart';
 import 'package:pathmaker/services/data_coordinator.dart';
 
 final dataCoordinatorProvider =
@@ -26,7 +27,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => HomePage(),
+        '/charactersheet': (context) => CharacterSheetFullScreen(),
+      },
     );
   }
 }

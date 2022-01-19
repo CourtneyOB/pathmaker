@@ -2,6 +2,7 @@ import 'package:pathmaker/enum.dart';
 import 'package:pathmaker/model/ancestry.dart';
 import 'package:pathmaker/model/heritage.dart';
 import 'package:pathmaker/model/feat.dart';
+import 'package:pathmaker/model/skill_level.dart';
 
 class Character {
   String _name = "ReallyReallyLongName";
@@ -11,6 +12,25 @@ class Character {
   List<Language> _languages = [];
   List<String> _traits = [];
   List<String> _characteristics = [];
+  List<SkillLevel> _skills = [
+    SkillLevel(id: 0, name: 'Acrobatics', associatedAbility: Ability.dex),
+    SkillLevel(id: 1, name: 'Arcana', associatedAbility: Ability.intl),
+    SkillLevel(id: 2, name: 'Athletics', associatedAbility: Ability.str),
+    SkillLevel(id: 3, name: 'Crafting', associatedAbility: Ability.intl),
+    SkillLevel(id: 4, name: 'Deception', associatedAbility: Ability.cha),
+    SkillLevel(id: 5, name: 'Diplomacy', associatedAbility: Ability.cha),
+    SkillLevel(id: 6, name: 'Intimidation', associatedAbility: Ability.cha),
+    SkillLevel(id: 7, name: 'Lore', associatedAbility: Ability.intl),
+    SkillLevel(id: 8, name: 'Medicine', associatedAbility: Ability.wis),
+    SkillLevel(id: 9, name: 'Nature', associatedAbility: Ability.wis),
+    SkillLevel(id: 10, name: 'Occultism', associatedAbility: Ability.intl),
+    SkillLevel(id: 11, name: 'Performance', associatedAbility: Ability.cha),
+    SkillLevel(id: 12, name: 'Religion', associatedAbility: Ability.wis),
+    SkillLevel(id: 13, name: 'Society', associatedAbility: Ability.intl),
+    SkillLevel(id: 14, name: 'Stealth', associatedAbility: Ability.dex),
+    SkillLevel(id: 15, name: 'Survival', associatedAbility: Ability.wis),
+    SkillLevel(id: 16, name: 'Thievery', associatedAbility: Ability.dex),
+  ];
 
   Map<Ability, int> _abilityScores = {
     Ability.cha: 10,
@@ -29,6 +49,7 @@ class Character {
   List<String> get traits => _traits;
   List<String> get characteristics => _characteristics;
   Map<Ability, int> get abilityScores => _abilityScores;
+  List<SkillLevel> get skills => _skills;
 
   //Background
   Ancestry? _ancestry;
@@ -113,5 +134,11 @@ class Character {
   void modifyAbilityScore(Ability ability, int modifier) {
     int currentValue = abilityScores[ability]!;
     abilityScores[ability] = currentValue + modifier;
+    for (SkillLevel skill in _skills) {
+      if (skill.associatedAbility == ability) {
+        skill.currentModifier = skill.initialModifier +
+            convertToIntModifier(abilityScores[ability]!);
+      }
+    }
   }
 }

@@ -24,7 +24,15 @@ enum Skill {
   society,
   stealth,
   survival,
-  thievery
+  thievery,
+}
+
+enum Training {
+  untrained,
+  trained,
+  expert,
+  master,
+  legendary,
 }
 
 enum Language {
@@ -105,7 +113,7 @@ String enumListAsString(List<Enum> list) {
   return stringList.join(', ');
 }
 
-String convertToModifier(int value) {
+String convertToStringModifier(int value) {
   String stringValue = '';
   int modifierValue = ((value - 10) / 2).floorToDouble().toInt();
   if (modifierValue > 0) {
@@ -114,4 +122,8 @@ String convertToModifier(int value) {
     stringValue = modifierValue.toString();
   }
   return stringValue;
+}
+
+int convertToIntModifier(int value) {
+  return ((value - 10) / 2).floorToDouble().toInt();
 }
