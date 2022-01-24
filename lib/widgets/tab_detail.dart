@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:pathmaker/widgets/ability_multiselect.dart';
 import 'package:pathmaker/constants.dart';
 import 'package:pathmaker/widgets/feat_select.dart';
+import 'package:pathmaker/widgets/skill_multiselect.dart';
 
 class AncestryTabDetail extends StatelessWidget {
   final String text;
   final String boosts;
   final String flaws;
   final int optionalBoosts;
+  final int optionalSkills;
 
   AncestryTabDetail(
       {required this.text,
       required this.boosts,
       required this.flaws,
-      required this.optionalBoosts});
+      required this.optionalBoosts,
+      required this.optionalSkills});
 
   List<Widget> getContent() {
     List<Widget> content = [
@@ -52,6 +55,10 @@ class AncestryTabDetail extends StatelessWidget {
     ));
 
     content.add(FeatSelect());
+
+    if (optionalSkills > 0) {
+      content.add(SkillMultiSelect(maxSelection: optionalSkills));
+    }
 
     return content;
   }

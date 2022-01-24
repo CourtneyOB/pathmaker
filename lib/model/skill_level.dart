@@ -2,10 +2,12 @@ import 'package:pathmaker/enum.dart';
 
 class SkillLevel {
   int id;
-  String name;
+  Skill name;
   Ability associatedAbility;
   Training training;
+  int trainingContributors;
   int initialModifier;
+  int abilityModifier;
   int currentModifier;
 
   SkillLevel(
@@ -13,7 +15,9 @@ class SkillLevel {
       required this.name,
       required this.associatedAbility,
       this.training = Training.untrained,
+      this.trainingContributors = 0,
       this.initialModifier = 0,
+      this.abilityModifier = 0,
       this.currentModifier = 0});
 
   void trainSkill(Training newTraining) {
@@ -23,5 +27,10 @@ class SkillLevel {
     } else {
       initialModifier = 0;
     }
+    calculateModifier();
+  }
+
+  void calculateModifier() {
+    currentModifier = initialModifier + abilityModifier;
   }
 }

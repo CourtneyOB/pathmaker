@@ -37,10 +37,18 @@ class _AncestryTabsState extends ConsumerState<AncestryTabs> {
       }
 
       AncestryTabDetail newTabDetail = AncestryTabDetail(
-          text: ancestry.description,
-          boosts: boosts.isEmpty ? 'None' : boosts.join(', '),
-          flaws: flaws.isEmpty ? 'None' : flaws.join(', '),
-          optionalBoosts: ancestry.freeBoosts);
+        text: ancestry.description,
+        boosts: boosts.isEmpty ? 'None' : boosts.join(', '),
+        flaws: flaws.isEmpty ? 'None' : flaws.join(', '),
+        optionalBoosts: ancestry.freeBoosts,
+        optionalSkills:
+            ref.watch(dataCoordinatorProvider).selectedAncestryFeat == null
+                ? 0
+                : ref
+                    .watch(dataCoordinatorProvider)
+                    .selectedAncestryFeat!
+                    .freeSkills,
+      );
       tabDetails.add(newTabDetail);
     }
     return tabDetails;

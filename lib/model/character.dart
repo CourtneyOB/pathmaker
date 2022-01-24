@@ -13,23 +13,23 @@ class Character {
   List<String> _traits = [];
   List<String> _characteristics = [];
   List<SkillLevel> _skills = [
-    SkillLevel(id: 0, name: 'Acrobatics', associatedAbility: Ability.dex),
-    SkillLevel(id: 1, name: 'Arcana', associatedAbility: Ability.intl),
-    SkillLevel(id: 2, name: 'Athletics', associatedAbility: Ability.str),
-    SkillLevel(id: 3, name: 'Crafting', associatedAbility: Ability.intl),
-    SkillLevel(id: 4, name: 'Deception', associatedAbility: Ability.cha),
-    SkillLevel(id: 5, name: 'Diplomacy', associatedAbility: Ability.cha),
-    SkillLevel(id: 6, name: 'Intimidation', associatedAbility: Ability.cha),
-    SkillLevel(id: 7, name: 'Lore', associatedAbility: Ability.intl),
-    SkillLevel(id: 8, name: 'Medicine', associatedAbility: Ability.wis),
-    SkillLevel(id: 9, name: 'Nature', associatedAbility: Ability.wis),
-    SkillLevel(id: 10, name: 'Occultism', associatedAbility: Ability.intl),
-    SkillLevel(id: 11, name: 'Performance', associatedAbility: Ability.cha),
-    SkillLevel(id: 12, name: 'Religion', associatedAbility: Ability.wis),
-    SkillLevel(id: 13, name: 'Society', associatedAbility: Ability.intl),
-    SkillLevel(id: 14, name: 'Stealth', associatedAbility: Ability.dex),
-    SkillLevel(id: 15, name: 'Survival', associatedAbility: Ability.wis),
-    SkillLevel(id: 16, name: 'Thievery', associatedAbility: Ability.dex),
+    SkillLevel(id: 0, name: Skill.acrobatics, associatedAbility: Ability.dex),
+    SkillLevel(id: 1, name: Skill.arcana, associatedAbility: Ability.intl),
+    SkillLevel(id: 2, name: Skill.athletics, associatedAbility: Ability.str),
+    SkillLevel(id: 3, name: Skill.crafting, associatedAbility: Ability.intl),
+    SkillLevel(id: 4, name: Skill.deception, associatedAbility: Ability.cha),
+    SkillLevel(id: 5, name: Skill.diplomacy, associatedAbility: Ability.cha),
+    SkillLevel(id: 6, name: Skill.intimidation, associatedAbility: Ability.cha),
+    SkillLevel(id: 7, name: Skill.lore, associatedAbility: Ability.intl),
+    SkillLevel(id: 8, name: Skill.medicine, associatedAbility: Ability.wis),
+    SkillLevel(id: 9, name: Skill.nature, associatedAbility: Ability.wis),
+    SkillLevel(id: 10, name: Skill.occultism, associatedAbility: Ability.intl),
+    SkillLevel(id: 11, name: Skill.performance, associatedAbility: Ability.cha),
+    SkillLevel(id: 12, name: Skill.religion, associatedAbility: Ability.wis),
+    SkillLevel(id: 13, name: Skill.society, associatedAbility: Ability.intl),
+    SkillLevel(id: 14, name: Skill.stealth, associatedAbility: Ability.dex),
+    SkillLevel(id: 15, name: Skill.survival, associatedAbility: Ability.wis),
+    SkillLevel(id: 16, name: Skill.thievery, associatedAbility: Ability.dex),
   ];
 
   Map<Ability, int> _abilityScores = {
@@ -120,15 +120,31 @@ class Character {
     _characteristics.add(_heritage!.description);
   }
 
-  void chooseAncestryFeat(Feat newFeat) {
+  void chooseAncestryFeat(Feat? newFeat) {
     if (_ancestryFeat == newFeat) {
       return;
     }
     if (_ancestryFeat != null) {
       //remove attributes associated with feat
+      for (Skill skill in _ancestryFeat!.skillTrained) {
+        SkillLevel skillLevel =
+            _skills.firstWhere((item) => item.name == skill);
+        skillLevel.trainingContributors -= 1;
+        if (skillLevel.trainingContributors < 1) {
+          skillLevel.trainSkill(Training.untrained);
+        }
+      }
     }
     _ancestryFeat = newFeat;
-    //add attributes associated with feat
+    if (newFeat != null) {
+      //add attributes associated with feat
+      for (Skill skill in _ancestryFeat!.skillTrained) {
+        SkillLevel skillLevel =
+            _skills.firstWhere((item) => item.name == skill);
+        skillLevel.trainSkill(Training.trained);
+        skillLevel.trainingContributors += 1;
+      }
+    }
   }
 
   void modifyAbilityScore(Ability ability, int modifier) {
@@ -136,9 +152,19 @@ class Character {
     abilityScores[ability] = currentValue + modifier;
     for (SkillLevel skill in _skills) {
       if (skill.associatedAbility == ability) {
-        skill.currentModifier = skill.initialModifier +
-            convertToIntModifier(abilityScores[ability]!);
+        skill.abilityModifier = convertToIntModifier(abilityScores[ability]!);
+        skill.calculateModifier();
       }
     }
+  }
+
+  List<Skill> getUntrainedSkills() {
+    List<Skill> skills = [];
+    var skillLevels =
+        _skills.where((item) => item.training == Training.untrained);
+    for (var s in skillLevels) {
+      skills.add(s.name);
+    }
+    return skills;
   }
 }

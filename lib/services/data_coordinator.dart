@@ -7,6 +7,7 @@ import 'package:pathmaker/enum.dart';
 import 'package:pathmaker/model/heritage.dart';
 import 'package:pathmaker/model/message.dart';
 import 'package:pathmaker/model/feat.dart';
+import 'package:pathmaker/model/skill_level.dart';
 
 class DataCoordinator extends StateNotifier<DataState> {
   DataCoordinator(DataState state) : super(state);
@@ -19,6 +20,7 @@ class DataCoordinator extends StateNotifier<DataState> {
 
     //remove existing heritage and feat
     state.selectedHeritage = null;
+    state.currentCharacter.chooseAncestryFeat(null);
     state.selectedAncestryFeat = null;
 
     //remove existing boosts, then empty the list
@@ -34,7 +36,7 @@ class DataCoordinator extends StateNotifier<DataState> {
     state = state.clone();
   }
 
-  //called by dialog box from message 1
+  //called by dialog box from message 1 (select additional boosts according to ancestry)
   void applyFreeBoosts(List<Ability> abilities) {
     //remove existing boosts
     for (Ability ability in state.selectedFreeBoosts) {
@@ -48,6 +50,29 @@ class DataCoordinator extends StateNotifier<DataState> {
     }
 
     state.messageIsCompleteStatus[1] = true;
+    state = state.clone();
+  }
+
+  //called by dialog box from message 1 (feat which has free skills)
+  void applyFreeSkills(List<Skill> skills) {
+    //remove existing
+    for (Skill skill in state.selectedFreeSkills) {
+      SkillLevel skillLevel = state.currentCharacter.skills
+          .firstWhere((item) => item.name == skill);
+      skillLevel.trainingContributors -= 1;
+      if (skillLevel.trainingContributors < 1) {
+        skillLevel.trainSkill(Training.untrained);
+      }
+    }
+
+    //set new
+    state.selectedFreeSkills = skills;
+    for (Skill skill in state.selectedFreeSkills) {
+      SkillLevel skillLevel = state.currentCharacter.skills
+          .firstWhere((item) => item.name == skill);
+      skillLevel.trainingContributors += 1;
+      skillLevel.trainSkill(Training.trained);
+    }
     state = state.clone();
   }
 
@@ -107,6 +132,7 @@ class DataState {
   List<Feat> availableAncestryFeats = [];
   List<Ability> ancestryAvailableBoosts = [];
   List<Ability> selectedFreeBoosts = [];
+  List<Skill> selectedFreeSkills = [];
 
   //messages
   MessageData messageService = MessageData();
@@ -178,6 +204,7 @@ class DataState {
       ..availableHeritages = this.availableHeritages
       ..selectedFreeBoosts = this.selectedFreeBoosts
       ..availableAncestryFeats = this.availableAncestryFeats
-      ..selectedAncestryFeat = this.selectedAncestryFeat;
+      ..selectedAncestryFeat = this.selectedAncestryFeat
+      ..selectedFreeSkills = this.selectedFreeSkills;
   }
 }

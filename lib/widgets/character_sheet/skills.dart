@@ -17,7 +17,7 @@ class Skills extends ConsumerWidget {
       if (counter < 9) {
         firstSkillsList.add(SkillModifier(
             training: skill.training.stringValue()[0],
-            label: skill.name,
+            label: skill.name.stringValue(),
             modifier: skill.currentModifier < 0
                 ? '-${skill.currentModifier.toString()}'
                 : '+${skill.currentModifier.toString()}'));
@@ -27,7 +27,7 @@ class Skills extends ConsumerWidget {
       } else {
         secondSkillsList.add(SkillModifier(
             training: skill.training.stringValue()[0],
-            label: skill.name,
+            label: skill.name.stringValue(),
             modifier: skill.currentModifier < 0
                 ? '-${skill.currentModifier.toString()}'
                 : '+${skill.currentModifier.toString()}'));
